@@ -3,9 +3,10 @@ var OC;
 
 
 window.onload = () => {
-    const NUM_COL = 20;
-    const NUM_ROW = 20;
-    const elem_root = document.getElementById('root');
+    if(window.location.href.indexOf('main') > -1){
+        const NUM_COL = 20;
+        const NUM_ROW = 20;
+        const elem_root = document.getElementById('root');
     const size_root = {
         x: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('height')),
         y: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('width'))
@@ -28,12 +29,18 @@ window.onload = () => {
             }
         }
     }
+        // generateElems(window, NUM_COL, NUM_ROW);
 
-    MM = new MoveMap();
-    MM.event_listens();
+        MM = new MoveMap();
+        MM.event_listens();
 
-    OC = new OpenCard(size_root);
-    OC.event_listens();
+        OC = new OpenCard(size_root);
+        OC.event_listens();
+    }
+}
+
+function generateElems(window, NUM_COL, NUM_ROW){
+
 }
 
 function setElem(elem_root, size_elem, set_coord, set_bg, set_text){
