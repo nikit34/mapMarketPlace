@@ -15,7 +15,7 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    min-width: 150px;
+    min-width: 200px;
     padding: 25px 5px 25px 5px;
     margin: 0;
     z-index: 100;
@@ -26,6 +26,7 @@ body {
     list-style-position: outside;
     padding: 0;
     margin: 50px 0 50px 0;
+    text-align: center;
 }
 
 .sidebar .sidebar-top ul a {
@@ -50,6 +51,7 @@ body {
     list-style-position: outside;
     padding: 0;
     margin: 50px 0 50px 0;
+    text-align: center;
 }
 
 .sidebar .sidebar-middle ul a {
@@ -57,14 +59,10 @@ body {
     font-size: larger;
 }
 
-.sidebar .sidebar-middle ul a {
-    padding: 5px 25px 5px 25px;
-}
-
 .sidebar .sidebar-middle ul a li {
     border-radius: 5px;
     padding: 5px 25px 5px 25px;
-    margin:2.5px 0 2.5px 0;
+    margin: 2.5px 0 2.5px 0;
     color: rgb(5, 5, 50);
     transition: all 0.5s;
 }
