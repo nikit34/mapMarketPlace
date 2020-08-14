@@ -172,8 +172,8 @@ class OpenCard {
                 this.click_card.style.left = document.documentElement.scrollLeft + (window.innerWidth - parseInt(this.click_card.style.width)) / 2 + 'px';
                 this.black_blind = document.createElement('div');
                 this.black_blind.setAttribute('class', 'overlay');
-                this.black_blind.style.width = this.size_root.x + 'px';
-                this.black_blind.style.height = this.size_root.y + 'px';
+                this.black_blind.style.width = this.size_root.x + 40 + 'px';
+                this.black_blind.style.height = this.size_root.y + 20 + 'px';
                 setTimeout(() => {
                     this.click_card.removeAttribute('class');
                     this.click_card.setAttribute('class', 'card');
