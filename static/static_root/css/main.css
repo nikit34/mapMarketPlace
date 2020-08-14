@@ -21,6 +21,17 @@
     ;
 }
 
+.card.animate {
+    animation-duration: 1.5s;
+    animation-name: clicked-card;
+}
+
+@keyframes clicked-card {
+    to {
+        transform: rotate3d(1, 1, 1, 6.28rad);
+    }
+}
+
 .card p {
     text-align: center;
     padding-top: 50%;
@@ -29,6 +40,8 @@
 .overlay {
     position: absolute;
     background: black;
+    top: -20px;
+    left: -20px;
     opacity: 0.7;
     z-index: 9;
   }

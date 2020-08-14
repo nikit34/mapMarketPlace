@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block content %}
+
+<video autoplay muted loop id="myVideo">
+  <source src="{% static 'video_1.mov' %}" type="video/mp4">
+</video>
+
   <p>Logged out!</p>
   <a href="{% url 'login'%}">Click here to login again.</a>
 {% endblock %}

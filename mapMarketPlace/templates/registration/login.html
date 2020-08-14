@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 
+{% load static %}
 
 {% block content %}
+
+    <video autoplay muted loop id="myVideo">
+        <source src="{% static 'video_1.mov' %}" type="video/mp4">
+    </video>
 
 {% if form.errors %}
 
 <div class="row">
-    <div class="col-2"></div>
-    <div class="col-4 block-notification-1">
+    <div class="col-3"></div>
+    <div class="col-3 block-notification-1">
         <p>Your username and password didn't match. Please try again.</p>
     </div>
     <div class="col-6"></div>
@@ -16,8 +21,8 @@
 
 {% if next %}
 <div class="row">
-    <div class="col-2"></div>
-    <div class="col-4 block-notification-1">
+    <div class="col-3"></div>
+    <div class="col-3 block-notification-1">
         {% if user.is_authenticated %}
         <p>
             Your account doesn't have access to this page. To proceed, please login
@@ -32,8 +37,8 @@
 {% endif %}
 
 <div class="row">
-    <div class="col-2"></div>
-    <div class="col-4 block-input-1">
+    <div class="col-3"></div>
+    <div class="col-3 block-input-1">
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <table>
@@ -55,8 +60,8 @@
 </div>
 
 <div class="row">
-    <div class="col-2"></div>
-    <div class="col-4 block-1">
+    <div class="col-3"></div>
+    <div class="col-3 block-1">
         {# Assumes you setup the password_reset view in your URLconf #}
         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
     </div>
