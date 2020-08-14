@@ -30,7 +30,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mapMarketPlace.urls'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/main/'
 
 TEMPLATES = [
     {
