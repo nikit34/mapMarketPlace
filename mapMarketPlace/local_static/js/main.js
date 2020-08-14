@@ -7,6 +7,9 @@ window.onload = () => {
     window.location.href.indexOf('next=/main') < 0) {
         const NUM_COL = 20;
         const NUM_ROW = 20;
+
+        window.customElements.define('card-map', Card);
+
         const size_root = generateElems(NUM_COL, NUM_ROW);
 
         MM = new MoveMap();
@@ -23,7 +26,7 @@ function generateElems(NUM_COL, NUM_ROW){
         x: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('height')),
         y: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('width'))
     }
-    const size_elem = {
+    const set_size_elem = {
         x: parseInt(size_root.x / NUM_COL),
         y: parseInt(size_root.y / NUM_ROW)
     };
@@ -32,30 +35,106 @@ function generateElems(NUM_COL, NUM_ROW){
         for(let j = 0; j < NUM_COL - 0.5; j += 0.5){
             if (Number.isInteger(i) && Number.isInteger(j) ||
                 !Number.isInteger(i) && !Number.isInteger(j)) {
-                set_coord = {x: size_elem.x * j, y: size_elem.y * i };
+                set_coord = {x: set_size_elem.x * j, y: set_size_elem.y * i };
                 set_bg = 'url("../static/logo.png")';
-                set_text = `card_${i}_${j}`;
-                let elem = setElem(elem_root, size_elem, set_coord, set_bg, set_text);
-                elem.setAttribute('id', `card_${i}_${j}`);
-                elem.setAttribute('class', 'card');
+                set_text = `card_${i}_${j}`; // TODO: get from db -> text, bg
+                card = new Card(set_size_elem, set_coord, set_bg, set_text);
+                if (card.default_state()) {
+                    console.log('default state -> generated text dont visable');
+                } else {
+                    console.log('custom state');
+                    card.create_text();
+                }
+                card.event_listens();
+                elem_root.appendChild(card);
+                card.build_static_style();
+                card.setAttribute('id', `card_${i}_${j}`);
+                // let elem = setElem(elem_root, set_size_elem, set_coord, set_bg, set_text);
             }
         }
     }
     return size_root;
 }
 
-function setElem(elem_root, size_elem, set_coord, set_bg, set_text){
+class Card extends HTMLElement {
+    constructor(set_size_elem, set_coord, set_bg, set_text = ''){
+        super();
+        this.set_size_elem = {};
+        for (var key in set_size_elem) {
+            this.set_size_elem[key] = set_size_elem[key];
+        }
+        this.set_coord = {};
+        for (var key in set_coord) {
+            this.set_coord[key] = set_coord[key];
+        }
+        this.set_bg = set_bg;
+        this.set_text = set_text;
+        this.build_define_style();
+    }
+
+    build_define_style() {
+        this.style.width = this.set_size_elem.x + 'px';
+        this.style.height = this.set_size_elem.y + 'px';
+        this.style.fontSize = this.set_size_elem.x / 10 + 'px';
+        this.style.left = this.set_coord.x + 'px';
+        this.style.top = this.set_coord.y + 'px';
+        this.style.background = this.set_bg;
+    }
+
+    build_static_style(){
+        this.setAttribute('class', 'card');
+    }
+
+    create_text() {
+        let text_elem = document.createElement('p');
+        text_elem.textContent = this.set_text;
+        this.appendChild(text_elem);
+    }
+
+    default_state(){
+        if (this.set_text.substring(0, 5) === 'card_') {
+            return true;
+        }
+        return false;
+    }
+
+    event_listens(){
+        this.addEventListener('mouseover', () => {
+            this.style.boxShadow = `inset 0 0 ${parseInt(this.set_size_elem.x * 10) + 'px'} ${parseInt(this.set_size_elem.x / 10) + 'px'} rgba(0,0,0,0.8)`;
+            this.style.color = 'white';
+        });
+        this.addEventListener('mouseout', () => {
+            this.style.boxShadow = 'none';
+            this.style.color = 'rgba(0,0,0,0)';
+        });
+    }
+}
+
+function setElem(elem_root, set_size_elem, set_coord, set_bg, set_text) {
     const elem = document.createElement('div');
-    elem.style.width = size_elem.x + 'px';
-    elem.style.height = size_elem.y + 'px';
-    elem.style.fontSize = size_elem.x / 10 + 'px';
+    elem.style.width = set_size_elem.x + 'px';
+    elem.style.height = set_size_elem.y + 'px';
+    elem.style.fontSize = set_size_elem.x / 10 + 'px';
 
     elem.style.left = set_coord.x + 'px';
     elem.style.top = set_coord.y + 'px';
     elem.style.background = set_bg;
 
+    ```
+    <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+<p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+<p><img id="output" width="200" /></p>
+
+<script>
+var loadFile = function(event) {
+	var image = document.getElementById('output');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+</script>
+    ```
+
     elem.addEventListener('mouseover', () => {
-        elem.style.boxShadow = `inset 0 0 ${parseInt(size_elem.x * 10) + 'px'} ${parseInt(size_elem.x / 10) + 'px'} rgba(0,0,0,0.8)`;
+        elem.style.boxShadow = `inset 0 0 ${parseInt(set_size_elem.x * 10) + 'px'} ${parseInt(set_size_elem.x / 10) + 'px'} rgba(0,0,0,0.8)`;
         elem.style.color = 'white';
     });
     elem.addEventListener('mouseout', () => {
@@ -84,10 +163,7 @@ class MoveMap {
 
     set set_toggle_move_map(toggle){
         this.toggle = toggle;
-    }
-
-    get get_toggle_move_map(){
-        return this.toggle;
+        console.log(this.toggle);
     }
 
     get current_velocity() {
@@ -96,8 +172,8 @@ class MoveMap {
     }
 
     event_listens() {
-        if(this.get_toggle_move_map) {
-            document.body.addEventListener('mousemove', (e) => {
+        document.body.addEventListener('mousemove', (e) => {
+            if(this.toggle) {
                 this.gestures.x = parseInt(e.pageX);
                 this.gestures.y = parseInt(e.pageY);
                 if (this.is_move_down) {
@@ -107,14 +183,18 @@ class MoveMap {
                     );
                     return false;
                 }
-            });
-            document.body.addEventListener('mousedown', () => {
+            }
+        });
+        document.body.addEventListener('mousedown', () => {
+            if(this.toggle) {
                 this.start_position.x = this.gestures.x;
                 this.start_position.y = this.gestures.y;
                 this.is_move_down = true;
                 this.timer = window.setTimeout(this.current_velocity, 50);
-            });
-            document.body.addEventListener('mouseup', () => {
+            }
+        });
+        document.body.addEventListener('mouseup', () => {
+            if(this.toggle) {
                 this.is_move_down = false;
                 let distance = {x: 0, y: 0};
                 let scrollToPosition = {x: 0, y: 0};
@@ -129,8 +209,8 @@ class MoveMap {
                     this.velocity = {x: 0, y: 0};
                 }
                 return false;
-            });
-        }
+            }
+        });
     }
 }
 
@@ -156,12 +236,12 @@ class OpenCard {
 
     event_listens(){
         document.body,addEventListener('click', (e) => {
-            if((e.target.parentNode.id).toString().substring(0, 5) === 'card_' &&
+            if((e.target.id).toString().substring(0, 5) === 'card_' &&
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
             ) {
                 this.toggle.set_start = true;
                 MM.set_toggle_move_map = false;
-                this.click_card = e.target.parentNode;
+                this.click_card = e.target;
                 this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.width = parseInt(this.click_card.style.width) * 5 + 'px';
                 this.click_card.style.height = parseInt(this.click_card.style.height) * 5 + 'px';
