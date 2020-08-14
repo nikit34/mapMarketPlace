@@ -96,3 +96,34 @@ body {
     left: 220px;
     right: 0vw;
 }
+
+.block-notification-1 {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    border: solid 1px black;
+    padding: 0.5% 2.5% 0.5% 2.5%;
+    margin: 25px 10px 25px 10px;
+    font-size: larger;
+}
+
+.block-input-1 {
+    border-radius: 5px;
+    border: solid 1px black;
+    padding: 2.5% 2.5% 2.5% 2.5%;
+    margin: 25px 10px 25px 10px;
+    font-size: larger;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.block-input-1 input {
+    padding:5px 10px 5px 10px;
+    margin: 20px 0 0 0;
+    float: right;
+}
+
+.block-1 a {
+    color:white;
+    font-size:large;
+    text-decoration: none;
+    list-style-position: outside;
+}
