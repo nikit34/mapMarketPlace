@@ -3,7 +3,8 @@ var OC;
 
 
 window.onload = () => {
-    if(window.location.href.indexOf('main') > -1){
+    if(window.location.href.indexOf('main') > -1 &&
+    window.location.href.indexOf('next=/main') < 0) {
         const NUM_COL = 20;
         const NUM_ROW = 20;
         const size_root = generateElems(NUM_COL, NUM_ROW);

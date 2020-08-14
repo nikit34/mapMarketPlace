@@ -22,19 +22,18 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
-.sidebar ul {
+.sidebar .sidebar-top ul {
     list-style-position: outside;
     padding: 0;
     margin: 50px 0 50px 0;
-    border-radius: 5px;
 }
 
-.sidebar ul a {
+.sidebar .sidebar-top ul a {
     text-decoration: none;
     font-size: x-large;
 }
 
-.sidebar ul a li {
+.sidebar .sidebar-top ul a li {
     border-radius: 5px;
     padding: 10px 15px 10px 15px;
     margin:5px 0 5px 0;
@@ -42,9 +41,37 @@ body {
     transition: all 0.5s;
 }
 
-.sidebar ul a:hover li {
+.sidebar .sidebar-top ul a:hover li {
     background-color: rgba(5, 5, 50, 0.9);
     color: white;
+}
+
+.sidebar .sidebar-middle ul {
+    list-style-position: outside;
+    padding: 0;
+    margin: 50px 0 50px 0;
+}
+
+.sidebar .sidebar-middle ul a {
+    text-decoration: none;
+    font-size: larger;
+}
+
+.sidebar .sidebar-middle ul a {
+    padding: 5px 25px 5px 25px;
+}
+
+.sidebar .sidebar-middle ul a li {
+    border-radius: 5px;
+    padding: 5px 25px 5px 25px;
+    margin:2.5px 0 2.5px 0;
+    color: rgb(5, 5, 50);
+    transition: all 0.5s;
+}
+
+.sidebar .sidebar-middle ul a:hover li {
+    background-color: white;
+    color: rgb(5, 5, 50);
 }
 
 .sidebar .sidebar-bottom{
@@ -52,11 +79,6 @@ body {
     padding: 0;
     margin: 0;
     bottom: 0;
-}
-
-.sidebar .sidebar-bottom p{
-    color: rgba(5, 5, 50, 0.5);
-    margin: 20px;
 }
 
 .sidebar .sidebar-bottom a{
@@ -72,6 +94,6 @@ body {
 .content-main {
     top: 2vh;
     bottom: 2vh;
-    left: 15vw;
+    left: 10vw;
     right: 0vw;
 }
