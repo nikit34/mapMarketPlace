@@ -37,6 +37,23 @@
     padding-top: 50%;
 }
 
+.card div {
+    text-align: center;
+    margin: 50% 40% 40% 40%;
+    min-height: 5vh;
+    padding: 1.25vh 1vw 1vh 1vw;
+    font-size: large;
+    border-radius: 2vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: rgb(5, 5, 50);
+    transition: all 0.5s;
+}
+
+.card div:hover{
+    background-color: rgba(5, 5, 50, 0.9);
+    color: white;
+}
+
 .overlay {
     position: absolute;
     background: black;

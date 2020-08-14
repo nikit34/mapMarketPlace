@@ -41,9 +41,8 @@ function generateElems(NUM_COL, NUM_ROW){
                 card = new Card(set_size_elem, set_coord, set_bg, set_text);
                 if (card.default_state()) {
                     console.log('default state -> generated text dont visable');
-                    // card.display_input_form();
+                    // card.display_curtain();
                 } else {
-                    console.log('custom state');
                     card.display_text();
                 }
                 card.event_listens();
@@ -92,8 +91,34 @@ class Card extends HTMLElement {
     }
 
     display_input_form() {
-        // le
-        return;
+        let span = document.createElement('h2');
+        this.appendChild(span);
+        let elem = document.createElement('input');
+        elem.setAttribute('type', 'file');
+        elem.setAttribute('accept', 'image/*');
+        elem.setAttribute('name', 'image');
+        elem.setAttribute('id', 'file');
+        elem.setAttribute('onchange', 'loadFile(event)');
+        elem.style.display = 'none';
+        elem.style.zIndex = '13';
+        span.appendChild(elem);
+
+        span = document.createElement('div');
+        this.appendChild(span);
+        elem = document.createElement('label');
+        elem.setAttribute('for', 'file');
+        elem.style.cursor = 'pointer';
+        elem.textContent = 'Upload Image';
+        elem.style.zIndex = '13';
+        span.appendChild(elem);
+
+        span = document.createElement('h2');
+        this.appendChild(span);
+        elem = document.createElement('img');
+        elem.setAttribute('id', 'output');
+        elem.setAttribute('width', '200');
+        elem.style.zIndex = '13';
+        span.appendChild(elem);
     }
 
     default_state(){
@@ -115,17 +140,11 @@ class Card extends HTMLElement {
     }
 }
 
-
-//     <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-// <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
-// <p><img id="output" width="200" /></p>
-
-// <script>
-// var loadFile = function(event) {
-// 	var image = document.getElementById('output');
-// 	image.src = URL.createObjectURL(event.target.files[0]);
-// };
-// </script>
+var loadFile = function(event) {
+    	var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        console.log(image, image.src);
+};
 
 
 class MoveMap {
@@ -233,6 +252,7 @@ class OpenCard {
                 setTimeout(() => {
                     this.click_card.removeAttribute('class');
                     this.click_card.setAttribute('class', 'card');
+                    this.click_card.display_input_form();
                     this.toggle.set_end = true;
                 }, 1500);
                 this.click_card.before(this.black_blind);
