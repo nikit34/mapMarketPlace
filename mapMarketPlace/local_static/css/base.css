@@ -72,9 +72,10 @@ body {
     color: rgb(5, 5, 50);
 }
 
-.sidebar .sidebar-bottom{
+.sidebar .sidebar-bottom {
     position: fixed;
-    padding: 0;
+    padding: 5px 25px 5px 25px;
+    text-align: center;
     margin: 0;
     bottom: 0;
 }
@@ -92,6 +93,6 @@ body {
 .content-main {
     top: 2vh;
     bottom: 2vh;
-    left: 10vw;
+    left: 220px;
     right: 0vw;
 }

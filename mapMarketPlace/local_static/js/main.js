@@ -142,23 +142,27 @@ class OpenCard {
         this.prev_style_card_top = null;
         this.prev_style_card_left = null;
         this.click_card = false;
-        this.toggle = false;
-    }
-
-    set set_toggle_open_card(toggle){
-        this.toggle = toggle;
-    }
-
-    get get_toggle_open_card(){
-        return this.toggle;
+        this.toggle = {
+            start: false,
+            end: false,
+            set set_start(start) {
+                this.start = start;
+            },
+            set set_end(end) {
+                this.end = end;
+            }
+        };
     }
 
     event_listens(){
         document.body,addEventListener('click', (e) => {
-            if((e.target.parentNode.id).toString().substring(0, 5) === 'card_' && !this.get_toggle_open_card) {
-                this.set_toggle_open_card = true;
+            if((e.target.parentNode.id).toString().substring(0, 5) === 'card_' &&
+                Object.keys(this.toggle).every((k) => !this.toggle[k])
+            ) {
+                this.toggle.set_start = true;
                 MM.set_toggle_move_map = false;
                 this.click_card = e.target.parentNode;
+                this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.width = parseInt(this.click_card.style.width) * 5 + 'px';
                 this.click_card.style.height = parseInt(this.click_card.style.height) * 5 + 'px';
                 this.click_card.style.zIndex = '12';
@@ -166,24 +170,33 @@ class OpenCard {
                 this.prev_style_card_left = this.click_card.style.left;
                 this.click_card.style.top = document.documentElement.scrollTop + (window.innerHeight - parseInt(this.click_card.style.height)) / 2 + 'px';
                 this.click_card.style.left = document.documentElement.scrollLeft + (window.innerWidth - parseInt(this.click_card.style.width)) / 2 + 'px';
-
                 this.black_blind = document.createElement('div');
                 this.black_blind.setAttribute('class', 'overlay');
                 this.black_blind.style.width = this.size_root.x + 'px';
                 this.black_blind.style.height = this.size_root.y + 'px';
+                setTimeout(() => {
+                    this.click_card.removeAttribute('class');
+                    this.click_card.setAttribute('class', 'card');
+                    this.toggle.set_end = true;
+                }, 1500);
                 this.click_card.before(this.black_blind);
 
-            } else if (this.get_toggle_open_card) {
-                this.set_toggle_open_card = false;
+            } else if (this.toggle.start && this.toggle.end) {
+                this.toggle.set_start = false;
                 MM.set_toggle_move_map = true;
+                this.click_card.removeAttribute('class');
+                this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.top = this.prev_style_card_top;
                 this.click_card.style.left = this.prev_style_card_left;
                 this.click_card.style.width = parseInt(parseInt(this.click_card.style.width) / 5) + 'px';
                 this.click_card.style.height = parseInt(parseInt(this.click_card.style.height) / 5) + 'px';
                 setTimeout(() => {
                     this.click_card.style.zIndex = '1';
+                    this.click_card.removeAttribute('class');
+                    this.click_card.setAttribute('class', 'card');
                     this.black_blind.remove();
-                }, 2000);
+                    this.toggle.set_end = false;
+                }, 1500);
             }
         })
     }
