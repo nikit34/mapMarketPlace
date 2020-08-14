@@ -140,7 +140,6 @@ class MoveMap {
 
     set set_toggle_move_map(toggle){
         this.toggle = toggle;
-        console.log(this.toggle);
     }
 
     get current_velocity() {

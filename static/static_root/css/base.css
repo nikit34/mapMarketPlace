@@ -9,6 +9,7 @@ body {
     padding: 0;
     overflow:  hidden;
     background-color: rgb(5, 5, 50);
+    font-family: 'Raleway', sans-serif;
 }
 
 .sidebar {
@@ -144,7 +145,8 @@ body {
 #myVideo {
     position: fixed;
     right: 0;
-    bottom: 0;
-    min-width: 100%;
+    left: 200px;
+    top: 0;
+    max-width: 100%;
     min-height: 100%;
-  }
+}
