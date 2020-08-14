@@ -7,7 +7,7 @@
     {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-grid.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -17,33 +17,16 @@
 </head>
 <body>
     <div class="row">
-        <div class="col-1">
-            {% block sidebar %}
-                <ul class="sidebar">
-                    <li><a href="{% url 'main' %}">Home</a></li>
-                    <li><a href="#">All books</a></li>
-                    <li><a href="#">All authors</a></li>
-                </ul>
-                <ul class="sidebar-nav">
-                    {% if user.is_authenticated %}
-                        <li>User: {{ user.get_username }}</li>
-                        <li><a href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
-                    {% endif %}
-                </ul>
-                {% if user.is_staff %}
-                    <hr />
-                    you muight publisher market
-                {% endif %}
-            {% endblock %}
+        <div class="col-1 sidebar">
+            {% include "sidebar.html" %}
         </div>
-        <div class="col-11"><div id="root">
-</div>
-
+        <div class="col-11 content-main">
             {% block content %}
 
             {% endblock %}
+
+            <div id="root"></div>
+
         </div>
     </div>
     <script src="{% static 'js/base.js' %}"></script>

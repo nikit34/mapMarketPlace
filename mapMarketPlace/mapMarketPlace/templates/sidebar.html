@@ -1,0 +1,34 @@
+<div class="row sidebar-top">
+    <div class="col">
+        <ul>
+            <a href="{% url 'main' %}"><li>Home</li></a>
+            <a href="#"><li>All books</li></a>
+            <a href="#"><li>All authors</li></a>
+        </ul>
+    </div>
+</div>
+<div class="row sidebar-middle">
+    <div class="col">
+        <ul>
+            {% if user.is_authenticated %}
+                <li>User: {{ user.get_username }}</li>
+                <a href="{% url 'logout' %}?next={{request.path}}"><li>Logout</li></a>
+            {% else %}
+                <a href="{% url 'login' %}?next={{request.path}}"><li>Login</li></a>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<div class="row sidebar-bottom">
+    <div class="col">
+        {% if user.is_staff %}
+            <hr />
+            <p>You muight</p>
+            <p>publisher market</p>
+        {% endif %}
+        <hr />
+        <p><a href="https://github.com/nikit34">GitHub</a></p>
+        <p><a href="https://nikit34.github.io">Developer</a></p>
+    </div>
+
+</div>

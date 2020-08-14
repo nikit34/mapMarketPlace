@@ -6,7 +6,18 @@ window.onload = () => {
     if(window.location.href.indexOf('main') > -1){
         const NUM_COL = 20;
         const NUM_ROW = 20;
-        const elem_root = document.getElementById('root');
+        const size_root = generateElems(NUM_COL, NUM_ROW);
+
+        MM = new MoveMap();
+        MM.event_listens();
+
+        OC = new OpenCard(size_root);
+        OC.event_listens();
+    }
+}
+
+function generateElems(NUM_COL, NUM_ROW){
+    const elem_root = document.getElementById('root');
     const size_root = {
         x: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('height')),
         y: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('width'))
@@ -21,7 +32,7 @@ window.onload = () => {
             if (Number.isInteger(i) && Number.isInteger(j) ||
                 !Number.isInteger(i) && !Number.isInteger(j)) {
                 set_coord = {x: size_elem.x * j, y: size_elem.y * i };
-                set_bg = 'url("static/logo.png")';
+                set_bg = 'url("../static/logo.png")';
                 set_text = `card_${i}_${j}`;
                 let elem = setElem(elem_root, size_elem, set_coord, set_bg, set_text);
                 elem.setAttribute('id', `card_${i}_${j}`);
@@ -29,18 +40,7 @@ window.onload = () => {
             }
         }
     }
-        // generateElems(window, NUM_COL, NUM_ROW);
-
-        MM = new MoveMap();
-        MM.event_listens();
-
-        OC = new OpenCard(size_root);
-        OC.event_listens();
-    }
-}
-
-function generateElems(window, NUM_COL, NUM_ROW){
-
+    return size_root;
 }
 
 function setElem(elem_root, size_elem, set_coord, set_bg, set_text){
