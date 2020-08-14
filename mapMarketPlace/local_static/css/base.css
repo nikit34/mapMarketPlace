@@ -15,7 +15,7 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    min-width: 200px;
+    max-width: 200px;
     padding: 25px 5px 25px 5px;
     margin: 0;
     z-index: 100;
@@ -74,7 +74,7 @@ body {
 
 .sidebar .sidebar-bottom {
     position: fixed;
-    padding: 5px 25px 5px 25px;
+    padding: 5px 45px 5px 45px;
     text-align: center;
     margin: 0;
     bottom: 0;

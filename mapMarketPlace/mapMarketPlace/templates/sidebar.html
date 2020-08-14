@@ -1,12 +1,17 @@
 <div class="row sidebar-top">
     <div class="col">
         <ul>
+            <h2>Map Maker</h2><h3>Place</h3>
             <a href="{% url 'main' %}"><li>Home</li></a>
-            <a href="#"><li>My buildboards</li></a>
-            <a href="#"><li>Templates</li></a>
+            {% if user.is_authenticated %}
+                <a href="#"><li>My buildboards</li></a>
+                <a href="#"><li>Templates</li></a>
+            {% endif %}
+            <hr>
             <a href="#"><li><i class="fa fa-vk"></i></li></a>
             <a href="#"><li><i class="fa fa-telegram"></i></li></a>
             <a href="#"><li><i class="fa fa-instagram"></i></li></a>
+            <hr>
         </ul>
     </div>
 </div>

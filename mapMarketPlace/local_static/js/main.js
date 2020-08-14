@@ -41,15 +41,15 @@ function generateElems(NUM_COL, NUM_ROW){
                 card = new Card(set_size_elem, set_coord, set_bg, set_text);
                 if (card.default_state()) {
                     console.log('default state -> generated text dont visable');
+                    // card.display_input_form();
                 } else {
                     console.log('custom state');
-                    card.create_text();
+                    card.display_text();
                 }
                 card.event_listens();
                 elem_root.appendChild(card);
                 card.build_static_style();
                 card.setAttribute('id', `card_${i}_${j}`);
-                // let elem = setElem(elem_root, set_size_elem, set_coord, set_bg, set_text);
             }
         }
     }
@@ -85,10 +85,15 @@ class Card extends HTMLElement {
         this.setAttribute('class', 'card');
     }
 
-    create_text() {
+    display_text() {
         let text_elem = document.createElement('p');
         text_elem.textContent = this.set_text;
         this.appendChild(text_elem);
+    }
+
+    display_input_form() {
+        // le
+        return;
     }
 
     default_state(){
@@ -110,45 +115,17 @@ class Card extends HTMLElement {
     }
 }
 
-function setElem(elem_root, set_size_elem, set_coord, set_bg, set_text) {
-    const elem = document.createElement('div');
-    elem.style.width = set_size_elem.x + 'px';
-    elem.style.height = set_size_elem.y + 'px';
-    elem.style.fontSize = set_size_elem.x / 10 + 'px';
 
-    elem.style.left = set_coord.x + 'px';
-    elem.style.top = set_coord.y + 'px';
-    elem.style.background = set_bg;
+//     <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+// <p><label for="file" style="cursor: pointer;">Upload Image</label></p>
+// <p><img id="output" width="200" /></p>
 
-    ```
-    <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
-<p><label for="file" style="cursor: pointer;">Upload Image</label></p>
-<p><img id="output" width="200" /></p>
-
-<script>
-var loadFile = function(event) {
-	var image = document.getElementById('output');
-	image.src = URL.createObjectURL(event.target.files[0]);
-};
-</script>
-    ```
-
-    elem.addEventListener('mouseover', () => {
-        elem.style.boxShadow = `inset 0 0 ${parseInt(set_size_elem.x * 10) + 'px'} ${parseInt(set_size_elem.x / 10) + 'px'} rgba(0,0,0,0.8)`;
-        elem.style.color = 'white';
-    });
-    elem.addEventListener('mouseout', () => {
-        elem.style.boxShadow = 'none';
-        elem.style.color = 'rgba(0,0,0,0)';
-    });
-    elem_root.appendChild(elem);
-
-    const text_elem = document.createElement('p');
-    text_elem.textContent = set_text;
-
-    elem.appendChild(text_elem);
-    return elem;
-}
+// <script>
+// var loadFile = function(event) {
+// 	var image = document.getElementById('output');
+// 	image.src = URL.createObjectURL(event.target.files[0]);
+// };
+// </script>
 
 
 class MoveMap {
