@@ -33,8 +33,21 @@
 }
 
 .card p {
-    text-align: center;
-    padding-top: 50%;
+    display: inline-block;
+    min-width: 300px;
+}
+
+.card p label{
+    float: left;
+    clear: right;
+}
+
+.card p input{
+    float: right;
+}
+
+.card button{
+    margin-left: 250px;
 }
 
 .card div {
@@ -54,7 +67,7 @@
     color: white;
 }
 
-.overlay {
+#overlay {
     position: absolute;
     background: black;
     top: -20px;

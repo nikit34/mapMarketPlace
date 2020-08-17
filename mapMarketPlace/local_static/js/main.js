@@ -1,6 +1,32 @@
 var MM;
 var OC;
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    }
+});
 
 window.onload = () => {
     if(window.location.href.indexOf('main') > -1 &&
@@ -69,6 +95,7 @@ class Card extends HTMLElement {
         this.set_bg = set_bg;
         this.set_text = set_text;
         this.build_define_style();
+        this.form = null
     }
 
     build_define_style() {
@@ -91,34 +118,83 @@ class Card extends HTMLElement {
     }
 
     display_input_form() {
-        let span = document.createElement('h2');
-        this.appendChild(span);
-        let elem = document.createElement('input');
-        elem.setAttribute('type', 'file');
-        elem.setAttribute('accept', 'image/*');
-        elem.setAttribute('name', 'image');
-        elem.setAttribute('id', 'file');
-        elem.setAttribute('onchange', 'loadFile(event)');
-        elem.style.display = 'none';
-        elem.style.zIndex = '13';
-        span.appendChild(elem);
+        this.form = document.createElement('form');
+        this.form.setAttribute('method', 'post');
+        this.form.setAttribute('enctype', 'multipart/form-data');
+        this.form.style.marginTop = parseInt(this.style.height) / 2 - 80 + 'px';
+        this.form.style.marginLeft = parseInt(this.style.width) / 2 - 150 + 'px';
+        this.form.style.zIndex = parseInt(this.style.zIndex) + 1
+        this.appendChild(this.form);
+            let elem = document.createElement('input');
+            elem.setAttribute('type', 'hidden');
+            elem.setAttribute('name', 'csrfmiddlewaretoken');
+            elem.setAttribute('value', getCookie('csrftoken'));
+        this.form.appendChild(elem);
 
-        span = document.createElement('div');
-        this.appendChild(span);
-        elem = document.createElement('label');
-        elem.setAttribute('for', 'file');
-        elem.style.cursor = 'pointer';
-        elem.textContent = 'Upload Image';
-        elem.style.zIndex = '13';
-        span.appendChild(elem);
+            let p = document.createElement('p');
+                elem = document.createElement('label');
+                elem.setAttribute('for', 'id_title');
+                elem.textContent = 'Title: ';
+            p.appendChild(elem);
+                elem = document.createElement('input');
+                elem.setAttribute('id', 'id_title');
+                elem.setAttribute('type', 'text');
+                elem.setAttribute('name', 'title');
+                elem.setAttribute('maxlength', '50');
+                elem.required = true;
+            p.appendChild(elem);
+        this.form.appendChild(p);
 
-        span = document.createElement('h2');
-        this.appendChild(span);
-        elem = document.createElement('img');
-        elem.setAttribute('id', 'output');
-        elem.setAttribute('width', '200');
-        elem.style.zIndex = '13';
-        span.appendChild(elem);
+            p = document.createElement('p');
+                elem = document.createElement('label');
+                elem.setAttribute('for', 'id_description');
+                elem.textContent = 'Description: ';
+            p.appendChild(elem);
+                elem = document.createElement('input');
+                elem.setAttribute('id', 'id_description');
+                elem.setAttribute('type', 'text');
+                elem.setAttribute('name', 'description');
+                elem.setAttribute('maxlength', '200');
+                elem.required = true;
+            p.appendChild(elem);
+        this.form.appendChild(p);
+
+            p = document.createElement('p');
+                elem = document.createElement('label');
+                elem.setAttribute('for', 'id_image'); // elem.setAttribute('for', 'image');
+                elem.textContent = 'Image: ';
+            p.appendChild(elem);
+                elem = document.createElement('input');
+                elem.setAttribute('id', 'id_image');
+                elem.setAttribute('type', 'image');
+                elem.setAttribute('name', 'image');
+                elem.required = true;
+            p.appendChild(elem);
+        this.form.appendChild(p);
+
+            p = document.createElement('p');
+                elem = document.createElement('label');
+                elem.setAttribute('for', 'id_timer');
+                elem.textContent = 'Timer: ';
+            p.appendChild(elem);
+                elem = document.createElement('input');
+                elem.setAttribute('id', 'id_timer');
+                elem.setAttribute('type', 'text');
+                elem.setAttribute('name', 'timer');
+                elem.required = true;
+            p.appendChild(elem);
+        this.form.appendChild(p);
+
+            p = document.createElement('p');
+                elem = document.createElement('button');
+                elem.setAttribute('type', 'submit');
+                elem.textContent = 'upload';
+            p.appendChild(elem);
+        this.form.appendChild(p);
+    }
+
+    remove_input_form() {
+        this.form.remove();
     }
 
     default_state(){
@@ -237,16 +313,16 @@ class OpenCard {
                 this.toggle.set_start = true;
                 MM.set_toggle_move_map = false;
                 this.click_card = e.target;
+                this.click_card.style.zIndex = '12';
                 this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.width = parseInt(this.click_card.style.width) * 5 + 'px';
                 this.click_card.style.height = parseInt(this.click_card.style.height) * 5 + 'px';
-                this.click_card.style.zIndex = '12';
                 this.prev_style_card_top = this.click_card.style.top;
                 this.prev_style_card_left = this.click_card.style.left;
                 this.click_card.style.top = document.documentElement.scrollTop + (window.innerHeight - parseInt(this.click_card.style.height)) / 2 + 'px';
                 this.click_card.style.left = document.documentElement.scrollLeft + (window.innerWidth - parseInt(this.click_card.style.width)) / 2 + 'px';
                 this.black_blind = document.createElement('div');
-                this.black_blind.setAttribute('class', 'overlay');
+                this.black_blind.setAttribute('id', 'overlay');
                 this.black_blind.style.width = this.size_root.x + 40 + 'px';
                 this.black_blind.style.height = this.size_root.y + 20 + 'px';
                 setTimeout(() => {
@@ -257,9 +333,12 @@ class OpenCard {
                 }, 1500);
                 this.click_card.before(this.black_blind);
 
-            } else if (this.toggle.start && this.toggle.end) {
+            } else if ((e.target.id).toString() === 'overlay' &&
+                this.toggle.start && this.toggle.end
+            ) {
                 this.toggle.set_start = false;
                 MM.set_toggle_move_map = true;
+                this.click_card.remove_input_form();
                 this.click_card.removeAttribute('class');
                 this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.top = this.prev_style_card_top;
@@ -267,10 +346,10 @@ class OpenCard {
                 this.click_card.style.width = parseInt(parseInt(this.click_card.style.width) / 5) + 'px';
                 this.click_card.style.height = parseInt(parseInt(this.click_card.style.height) / 5) + 'px';
                 setTimeout(() => {
-                    this.click_card.style.zIndex = '1';
                     this.click_card.removeAttribute('class');
                     this.click_card.setAttribute('class', 'card');
                     this.black_blind.remove();
+                    this.click_card.style.zIndex = '1';
                     this.toggle.set_end = false;
                 }, 1500);
             }
