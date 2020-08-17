@@ -1,32 +1,8 @@
+import getCookie from './base.js';
+
 var MM;
 var OC;
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-function csrfSafeMethod(method) {
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-        }
-    }
-});
 
 window.onload = () => {
     if(window.location.href.indexOf('main') > -1 &&
@@ -64,7 +40,7 @@ function generateElems(NUM_COL, NUM_ROW){
                 set_coord = {x: set_size_elem.x * j, y: set_size_elem.y * i };
                 set_bg = 'url("../static/logo.png")';
                 set_text = `card_${i}_${j}`; // TODO: get from db -> text, bg
-                card = new Card(set_size_elem, set_coord, set_bg, set_text);
+                let card = new Card(set_size_elem, set_coord, set_bg, set_text);
                 if (card.default_state()) {
                     console.log('default state -> generated text dont visable');
                     // card.display_curtain();
