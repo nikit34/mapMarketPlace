@@ -21,7 +21,7 @@ class authMainView(LoginRequiredMixin, View):
         form = MarketImageForm(request.POST or None, request.FILES or None)  # TODO: add instance by ads
         if form.is_valid():
             form.author = request.user
-            form.save()
+            form.save(commit=True)
         return render(request, 'base.html', {'form': form})
 
 

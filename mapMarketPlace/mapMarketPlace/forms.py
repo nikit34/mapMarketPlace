@@ -1,5 +1,6 @@
 from django import forms
 from .models import MarketImage
+from django.utils import timezone
 
 
 class MarketImageForm(forms.ModelForm):
@@ -25,3 +26,9 @@ class MarketImageForm(forms.ModelForm):
         if answer:
             raise forms.ValidationError(answer)
         return title
+
+    def clean_timer(self, *args, **kwargs):
+        choice_data = self.cleaned_data.get('timer')
+        if timezone.now() > choice_data:
+            raise forms.ValidationError('please, select a future date')
+        return timer
