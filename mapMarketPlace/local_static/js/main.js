@@ -95,6 +95,7 @@ class Card extends HTMLElement {
 
     display_input_form() {
         this.form = document.createElement('form');
+        this.form.setAttribute('action', location.href);
         this.form.setAttribute('method', 'post');
         this.form.setAttribute('enctype', 'multipart/form-data');
         this.form.style.marginTop = parseInt(this.style.height) / 2 - 80 + 'px';
@@ -137,12 +138,12 @@ class Card extends HTMLElement {
 
             p = document.createElement('p');
                 elem = document.createElement('label');
-                elem.setAttribute('for', 'id_image'); // elem.setAttribute('for', 'image');
+                elem.setAttribute('for', 'id_image');
                 elem.textContent = 'Image: ';
             p.appendChild(elem);
                 elem = document.createElement('input');
                 elem.setAttribute('id', 'id_image');
-                elem.setAttribute('type', 'image');
+                elem.setAttribute('type', 'file');
                 elem.setAttribute('name', 'image');
                 elem.required = true;
             p.appendChild(elem);
@@ -160,6 +161,11 @@ class Card extends HTMLElement {
                 elem.required = true;
             p.appendChild(elem);
         this.form.appendChild(p);
+        $("#id_timer").datepicker({
+            onSelect: function() {
+              $(this).change();
+            }
+        });
 
             p = document.createElement('p');
                 elem = document.createElement('button');
@@ -191,13 +197,6 @@ class Card extends HTMLElement {
         });
     }
 }
-
-var loadFile = function(event) {
-    	var image = document.getElementById('output');
-        image.src = URL.createObjectURL(event.target.files[0]);
-        console.log(image, image.src);
-};
-
 
 class MoveMap {
     constructor(){
