@@ -96,11 +96,11 @@ class Card extends HTMLElement {
     display_input_form() {
         this.form = document.createElement('form');
         this.form.setAttribute('action', location.href);
-        this.form.setAttribute('method', 'post');
+        this.form.setAttribute('method', 'POST');
         this.form.setAttribute('enctype', 'multipart/form-data');
         this.form.style.marginTop = parseInt(this.style.height) / 2 - 80 + 'px';
         this.form.style.marginLeft = parseInt(this.style.width) / 2 - 150 + 'px';
-        this.form.style.zIndex = parseInt(this.style.zIndex) + 1
+        this.form.style.zIndex = parseInt(this.style.zIndex) + 1;
         this.appendChild(this.form);
             let elem = document.createElement('input');
             elem.setAttribute('type', 'hidden');
@@ -132,14 +132,14 @@ class Card extends HTMLElement {
                 elem.setAttribute('type', 'text');
                 elem.setAttribute('name', 'description');
                 elem.setAttribute('maxlength', '200');
-                elem.required = true;
+                elem.required = false;
             p.appendChild(elem);
         this.form.appendChild(p);
 
             p = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_image');
-                elem.textContent = 'Image: ';
+                elem.textContent = 'Image:         ';
             p.appendChild(elem);
                 elem = document.createElement('input');
                 elem.setAttribute('id', 'id_image');
@@ -158,6 +158,7 @@ class Card extends HTMLElement {
                 elem.setAttribute('id', 'id_timer');
                 elem.setAttribute('type', 'text');
                 elem.setAttribute('name', 'timer');
+                elem.setAttribute('autocomplete', 'off');
                 elem.required = true;
             p.appendChild(elem);
         this.form.appendChild(p);

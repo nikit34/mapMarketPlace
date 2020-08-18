@@ -35,6 +35,7 @@
 .card p {
     display: inline-block;
     min-width: 300px;
+    color:white;
 }
 
 .card p label{

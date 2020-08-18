@@ -3,24 +3,30 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import MarketImageForm
 from .models import MarketImage
 
 
-class MainView(View):
+class authMainView(LoginRequiredMixin, View):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
-        form = MarketImageForm()
-        cards = MarketImage.objects.all()
-        print(cards)
-        return render(request, 'base.html', {'form': form, 'cards': cards})
+        # cards = MarketImage.objects.all()
+        return render(request, 'base.html')
 
     def post(self, request, *args, **kwargs):
-        form = MarketImageForm(request.POST, request.FILES)
-        print(1)
+        if not request.user.is_authenticated:
+            redirect('login')
+        form = MarketImageForm(request.POST or None, request.FILES or None)  # TODO: add instance by ads
         if form.is_valid():
+            form.author = request.user
             form.save()
-            print(2)
-            redirect('main')
         return render(request, 'base.html', {'form': form})
+
+
+# class guestMainView(LoginRequiredMixin, View):
+#     @method_decorator(ensure_csrf_cookie)
+#     def get(self, request, *args, **kwargs):
+#         # cards = MarketImage.objects.all()
+#         return render(request, 'base.html')

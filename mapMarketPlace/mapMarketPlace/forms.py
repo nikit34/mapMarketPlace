@@ -3,8 +3,25 @@ from .models import MarketImage
 
 
 class MarketImageForm(forms.ModelForm):
-    image = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    title = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'no more 20 symb.'}))
+    description = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'optional'}))
 
     class Meta:
         model = MarketImage
-        fields = ['title', 'description', 'timer']
+        fields = [
+            'title',
+            'description',
+            'image',
+            'timer',
+        ]
+
+    def clean_title(self, *args, **kwargs):
+        title = self.cleaned_data.get('title')
+        prohibite = ['/', '<', '>', ':', '\'', '"', '*', '&', '\\', ';', '#', '@', '!', '^', '№', '~', '`']
+        answer = []
+        for p in prohibite:
+            if p in title:
+                answer.append(f"symbol {p} has not valid\n")
+        if answer:
+            raise forms.ValidationError(answer)
+        return title
