@@ -9,3 +9,6 @@ class MarketImage(models.Model):
     data_publish = models.DateField(auto_now_add=True)
     timer = models.DateTimeField()
     image = models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return self.title
