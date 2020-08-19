@@ -24,7 +24,10 @@
             <div class="row" style="background-color: azure; min-height: 100px; min-width:700px; z-index:100; position:absolute;">
                 {{is_auth}}
                 {{cards}}
-                {{form}}
+                {%for c in cards%}
+                {{c.image}}
+{{c.title}}
+                {%endfor%}
             </div>
             <div class="row"></div>
 

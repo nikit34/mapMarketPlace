@@ -6,9 +6,10 @@ class MarketImage(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images/')
     data_publish = models.DateField(auto_now_add=True)
     timer = models.DateTimeField()
-    image = models.ImageField(upload_to='images/')
+    card_id = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.title
+        return self.card_id

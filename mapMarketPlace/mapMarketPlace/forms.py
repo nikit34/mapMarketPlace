@@ -14,6 +14,7 @@ class MarketImageForm(forms.ModelForm):
             'description',
             'image',
             'timer',
+            'card_id'
         ]
 
     def clean_title(self, *args, **kwargs):
@@ -32,3 +33,11 @@ class MarketImageForm(forms.ModelForm):
         if timezone.now() > choice_data:
             raise forms.ValidationError('please, select a future date')
         return choice_data
+
+    def clean_image(self,  *args, **kwargs):
+        file = self.cleaned_data.get('image')
+        if file.name[-4:] != '.png' or file.name[-4:] != '.jpg' or file.name[-5:] != '.jpeg':
+            raise forms.ValidationError("Image is not valid format")
+        if file._size > 15 * 1024 * 1024:
+            raise forms.ValidationError("Image file is too large ( > 15mb )")
+        return file
