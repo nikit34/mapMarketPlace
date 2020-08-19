@@ -21,7 +21,7 @@ body {
     padding: 25px 5px 25px 5px;
     margin: 0;
     z-index: 100;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .sidebar .sidebar-top ul {
