@@ -57,32 +57,32 @@
     background-color: rgba(100, 100, 50, 0.25);
 }
 
-input:focus{
+.card input:focus{
     color:rgb(0, 255, 0);
     background-color: #ffffff00 !important;
     outline: none;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
+.card input:-webkit-autofill,
+.card input:-webkit-autofill:hover,
+.card input:-webkit-autofill:focus,
+.card textarea:-webkit-autofill,
+.card textarea:-webkit-autofill:hover,
+.card textarea:-webkit-autofill:focus,
+.card select:-webkit-autofill,
+.card select:-webkit-autofill:hover,
+.card select:-webkit-autofill:focus {
   border: none;
   -webkit-text-fill-color: rgb(0, 255, 0);
   -webkit-box-shadow: 0 0 0px 1000px rgba(100, 100, 50, 0.25) inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-input[type="text" i]{
+.card input[type="text" i]{
     padding: 0 !important;
 }
 
-label[for="id_image"] {
+.card label[for="id_image"] {
     border: 1px solid gray;
     color: white;
     background-color: rgba(100, 100, 50, 0.9);
@@ -92,10 +92,10 @@ label[for="id_image"] {
     float: right !important;
     transition: all 1s;
 }
- input[id="id_image"][type=file] {
+.card input[id="id_image"][type=file] {
     opacity: 0;
 }
-label[for="id_image"]:hover {
+.card label[for="id_image"]:hover {
     border: 1px solid rgb(0, 0, 0);
     color: rgb(0, 0, 0);
     background-color: rgba(255, 255, 255, 0.9);
