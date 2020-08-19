@@ -31,4 +31,4 @@ class MarketImageForm(forms.ModelForm):
         choice_data = self.cleaned_data.get('timer')
         if timezone.now() > choice_data:
             raise forms.ValidationError('please, select a future date')
-        return timer
+        return choice_data
