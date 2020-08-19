@@ -45,7 +45,7 @@ function generateElems(NUM_COL, NUM_ROW){
                     console.log('default state -> generated text dont visable');
                     // card.display_curtain();
                 } else {
-                    card.display_text();
+                    card.display_ads_text();
                 }
                 card.event_listens();
                 elem_root.appendChild(card);
@@ -87,7 +87,7 @@ class Card extends HTMLElement {
         this.setAttribute('class', 'card');
     }
 
-    display_text() {
+    display_ads_text() {
         let text_elem = document.createElement('p');
         text_elem.textContent = this.set_text;
         this.appendChild(text_elem);
@@ -282,6 +282,8 @@ class OpenCard {
     }
 
     event_listens(){
+        let is_auth = JSON.parse(document.getElementById('js-data').textContent)
+        console.log(is_auth);
         document.body,addEventListener('click', (e) => {
             if((e.target.id).toString().substring(0, 5) === 'card_' &&
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
