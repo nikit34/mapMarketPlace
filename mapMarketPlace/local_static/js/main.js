@@ -282,7 +282,7 @@ class OpenCard {
     }
 
     event_listens(){
-        let is_auth = JSON.parse(document.getElementById('js-data').textContent);
+        let is_auth = JSON.parse(document.getElementById('js-auth').textContent);
         document.body,addEventListener('click', (e) => {
             if((e.target.id).toString().substring(0, 5) === 'card_' &&
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
