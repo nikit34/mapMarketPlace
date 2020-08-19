@@ -26,15 +26,12 @@
         <div class="col-10 content-main">
             <div class="row" style="background-color: azure; min-height: 100px; min-width:700px; z-index:100; position:absolute;">
                 {{is_auth|json_script:"js-data"}}
-                {{cards.image}}
             </div>
             <div class="row"></div>
             {% block content %}
             {% endblock %}
 
             <div id="root"></div>
-
-
 
         </div>
     </div>

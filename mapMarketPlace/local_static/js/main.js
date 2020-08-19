@@ -282,8 +282,7 @@ class OpenCard {
     }
 
     event_listens(){
-        let is_auth = JSON.parse(document.getElementById('js-data').textContent)
-        console.log(is_auth);
+        let is_auth = JSON.parse(document.getElementById('js-data').textContent);
         document.body,addEventListener('click', (e) => {
             if((e.target.id).toString().substring(0, 5) === 'card_' &&
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
@@ -306,7 +305,9 @@ class OpenCard {
                 setTimeout(() => {
                     this.click_card.removeAttribute('class');
                     this.click_card.setAttribute('class', 'card');
-                    this.click_card.display_input_form();
+                    if(is_auth) {
+                        this.click_card.display_input_form();
+                    }
                     this.toggle.set_end = true;
                 }, 1500);
                 this.click_card.before(this.black_blind);
@@ -316,7 +317,9 @@ class OpenCard {
             ) {
                 this.toggle.set_start = false;
                 MM.set_toggle_move_map = true;
-                this.click_card.remove_input_form();
+                if(is_auth){
+                    this.click_card.remove_input_form();
+                }
                 this.click_card.removeAttribute('class');
                 this.click_card.setAttribute('class', 'card animate');
                 this.click_card.style.top = this.prev_style_card_top;
