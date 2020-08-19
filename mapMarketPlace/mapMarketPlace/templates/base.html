@@ -25,11 +25,9 @@
 
             </div>
             <div class="row"></div>
-            {% block content %}
-            {% endblock %}
 
+            {% block content %}{% endblock %}
             <div id="root"></div>
-
         </div>
     </div>
     {{is_auth|json_script:"js-auth"}}

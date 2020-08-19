@@ -7,7 +7,6 @@
     clip-path: polygon(50% 2%, 98% 50%, 50% 98%, 2% 50%);
     position: absolute;
     box-shadow: none;
-    color: rgba(0, 0, 0, 0);
     z-index: 1;
     background-size: cover !important;
     background-position: center !important;
@@ -67,6 +66,13 @@
     background-color: rgba(5, 5, 50, 0.9);
     color: white;
 }
+
+/* p.curtain {
+    color:red;
+    text-align: center;
+    font-size: large;
+    margin-top:40%;
+} */
 
 #overlay {
     position: absolute;

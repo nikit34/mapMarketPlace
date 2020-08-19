@@ -42,8 +42,7 @@ function generateElems(NUM_COL, NUM_ROW){
                 set_text = `card_${i}_${j}`; // TODO: get from db -> text, bg
                 let card = new Card(set_size_elem, set_coord, set_bg, set_text);
                 if (card.default_state()) {
-                    console.log('default state -> generated text dont visable');
-                    // card.display_curtain();
+                    card.display_curtain();
                 } else {
                     card.display_ads_text();
                 }
@@ -90,6 +89,13 @@ class Card extends HTMLElement {
     display_ads_text() {
         let text_elem = document.createElement('p');
         text_elem.textContent = this.set_text;
+        this.appendChild(text_elem);
+    }
+
+    display_curtain(){
+        let text_elem = document.createElement('p');
+        text_elem.setAttribute('class', 'curtain');
+        text_elem.textContent = "Here You can \nplace your ads";
         this.appendChild(text_elem);
     }
 
@@ -281,6 +287,64 @@ class OpenCard {
         };
     }
 
+    startOpen(target){
+        MM.set_toggle_move_map = false;
+        this.click_card = target;
+        this.click_card.style.zIndex = '12';
+        this.click_card.setAttribute('class', 'card animate');
+    }
+
+    moveOpen(){
+        this.click_card.style.width = parseInt(this.click_card.style.width) * 5 + 'px';
+        this.click_card.style.height = parseInt(this.click_card.style.height) * 5 + 'px';
+        this.prev_style_card_top = this.click_card.style.top;
+        this.prev_style_card_left = this.click_card.style.left;
+        this.click_card.style.top = document.documentElement.scrollTop + (window.innerHeight - parseInt(this.click_card.style.height)) / 2 + 'px';
+        this.click_card.style.left = document.documentElement.scrollLeft + (window.innerWidth - parseInt(this.click_card.style.width)) / 2 + 'px';
+    }
+
+    endOpen(is_auth){
+        this.click_card.removeAttribute('class');
+        this.click_card.setAttribute('class', 'card');
+        this.click_card.before(this.black_blind);
+        if(is_auth) {
+            this.click_card.display_input_form();
+        }
+    }
+
+    startClose(is_auth){
+        MM.set_toggle_move_map = true;
+        if(is_auth){
+            this.click_card.remove_input_form();
+        }
+        this.click_card.removeAttribute('class');
+        this.click_card.setAttribute('class', 'card animate');
+    }
+
+    moveClose(){
+        this.click_card.style.top = this.prev_style_card_top;
+        this.click_card.style.left = this.prev_style_card_left;
+        this.click_card.style.width = parseInt(parseInt(this.click_card.style.width) / 5) + 'px';
+        this.click_card.style.height = parseInt(parseInt(this.click_card.style.height) / 5) + 'px';
+    }
+
+    endClose(){
+        this.click_card.removeAttribute('class');
+        this.click_card.setAttribute('class', 'card');
+        this.click_card.style.zIndex = '1';
+    }
+
+    toggleBlankBlind(enable){
+        if(enable){
+            this.black_blind = document.createElement('div');
+            this.black_blind.setAttribute('id', 'overlay');
+            this.black_blind.style.width = this.size_root.x + 40 + 'px';
+            this.black_blind.style.height = this.size_root.y + 20 + 'px';
+        } else {
+            this.black_blind.remove();
+        }
+    }
+
     event_listens(){
         let is_auth = JSON.parse(document.getElementById('js-auth').textContent);
         document.body,addEventListener('click', (e) => {
@@ -288,49 +352,23 @@ class OpenCard {
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
             ) {
                 this.toggle.set_start = true;
-                MM.set_toggle_move_map = false;
-                this.click_card = e.target;
-                this.click_card.style.zIndex = '12';
-                this.click_card.setAttribute('class', 'card animate');
-                this.click_card.style.width = parseInt(this.click_card.style.width) * 5 + 'px';
-                this.click_card.style.height = parseInt(this.click_card.style.height) * 5 + 'px';
-                this.prev_style_card_top = this.click_card.style.top;
-                this.prev_style_card_left = this.click_card.style.left;
-                this.click_card.style.top = document.documentElement.scrollTop + (window.innerHeight - parseInt(this.click_card.style.height)) / 2 + 'px';
-                this.click_card.style.left = document.documentElement.scrollLeft + (window.innerWidth - parseInt(this.click_card.style.width)) / 2 + 'px';
-                this.black_blind = document.createElement('div');
-                this.black_blind.setAttribute('id', 'overlay');
-                this.black_blind.style.width = this.size_root.x + 40 + 'px';
-                this.black_blind.style.height = this.size_root.y + 20 + 'px';
+                this.startOpen(e.target);
+                this.moveOpen();
+                this.toggleBlankBlind(true);
                 setTimeout(() => {
-                    this.click_card.removeAttribute('class');
-                    this.click_card.setAttribute('class', 'card');
-                    if(is_auth) {
-                        this.click_card.display_input_form();
-                    }
+                    this.endOpen(is_auth);
                     this.toggle.set_end = true;
                 }, 1500);
-                this.click_card.before(this.black_blind);
 
             } else if ((e.target.id).toString() === 'overlay' &&
                 this.toggle.start && this.toggle.end
             ) {
                 this.toggle.set_start = false;
-                MM.set_toggle_move_map = true;
-                if(is_auth){
-                    this.click_card.remove_input_form();
-                }
-                this.click_card.removeAttribute('class');
-                this.click_card.setAttribute('class', 'card animate');
-                this.click_card.style.top = this.prev_style_card_top;
-                this.click_card.style.left = this.prev_style_card_left;
-                this.click_card.style.width = parseInt(parseInt(this.click_card.style.width) / 5) + 'px';
-                this.click_card.style.height = parseInt(parseInt(this.click_card.style.height) / 5) + 'px';
+                this.startClose(is_auth);
+                this.moveClose();
                 setTimeout(() => {
-                    this.click_card.removeAttribute('class');
-                    this.click_card.setAttribute('class', 'card');
-                    this.black_blind.remove();
-                    this.click_card.style.zIndex = '1';
+                    this.toggleBlankBlind(false);
+                    this.endClose();
                     this.toggle.set_end = false;
                 }, 1500);
             }
