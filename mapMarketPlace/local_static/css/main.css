@@ -39,41 +39,83 @@
 .card p {
     display: inline-block;
     min-width: 300px;
-    color:white;
+}
+
+.card:hover {
+    color:white !important;
 }
 
 .card p label{
     float: left;
     clear: right;
+    font-size: larger;
 }
 
 .card p input{
     float: right;
+    background-color: rgba(100, 100, 50, 0.25);
+}
+
+input:focus{
+    color:rgb(0, 255, 0);
+    background-color: #ffffff00 !important;
+    outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none;
+  -webkit-text-fill-color: rgb(0, 255, 0);
+  -webkit-box-shadow: 0 0 0px 1000px rgba(100, 100, 50, 0.25) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type="text" i]{
+    padding: 0 !important;
+}
+
+label[for="id_image"] {
+    border: 1px solid gray;
+    color: white;
+    background-color: rgba(100, 100, 50, 0.9);
+    border-radius: 5px !important;
+    padding: 5px 10px 5px 10px;
+    font-size: small !important;
+    float: right !important;
+    transition: all 1s;
+}
+ input[id="id_image"][type=file] {
+    opacity: 0;
+}
+label[for="id_image"]:hover {
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .card button{
-    margin-left: 250px;
-}
-
-.card div {
-    text-align: center;
-    margin: 50% 40% 40% 40%;
-    min-height: 5vh;
-    padding: 1.25vh 1vw 1vh 1vw;
-    font-size: large;
-    border-radius: 2vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: rgb(5, 5, 50);
-    transition: all 0.5s;
-}
-
-.card div:hover{
-    background-color: rgba(5, 5, 50, 0.9);
+    float: right !important;
+    border: 1px solid gray;
     color: white;
+    background-color: rgba(100, 100, 50, 0.9);
+    border-radius: 2px !important;
+    padding: 5px 10px 5px 10px;
+    transition: all 1s;
+}
+.card button:hover{
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 p.curtain {
-    color:#8de890;
     font-size: small;
     pointer-events: none;
     margin: 50% 25%;

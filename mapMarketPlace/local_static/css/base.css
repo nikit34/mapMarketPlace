@@ -8,7 +8,7 @@ body {
     margin:0;
     padding: 0;
     overflow:  hidden;
-    background-color: rgb(5, 5, 50);
+    background-color: rgb(100, 100, 50);
     font-family: 'Raleway', sans-serif;
 }
 
@@ -40,12 +40,12 @@ body {
     border-radius: 5px;
     padding: 10px 15px 10px 15px;
     margin:5px 0 5px 0;
-    color: rgb(5, 5, 50);
+    color: rgb(100, 100, 50);
     transition: all 0.5s;
 }
 
 .sidebar .sidebar-top ul a:hover li {
-    background-color: rgba(5, 5, 50, 0.9);
+    background-color: rgba(100, 100, 50, 0.9);
     color: white;
 }
 
@@ -65,18 +65,17 @@ body {
     border-radius: 5px;
     padding: 5px 25px 5px 25px;
     margin: 2.5px 0 2.5px 0;
-    color: rgb(5, 5, 50);
+    color: rgb(100, 100, 50);
     transition: all 0.5s;
 }
 
 .sidebar .sidebar-middle ul a:hover li {
     background-color: white;
-    color: rgb(5, 5, 50);
+    color: rgb(100, 100, 50);
 }
 
 .sidebar .sidebar-bottom {
     position: fixed;
-    /* padding: 5px 15px 5px 15px; */
     padding:0;
     text-align: center;
     margin: 0;
@@ -86,7 +85,7 @@ body {
 }
 
 .sidebar .sidebar-bottom a{
-    color: rgba(5, 5, 50, 0.5);
+    color: rgba(100, 100, 50, 0.5);
     text-decoration: none;
     transition: all 0.5s;
 }
@@ -124,7 +123,7 @@ body {
     float: right;
     min-width: 6vw;
     height: 3vh;
-    background-color:  rgba(5, 5, 50, 0.9);
+    background-color:  rgba(100, 100, 50, 0.9);
     border-radius: 0.5vh;
     color:white;
     transition: all 0.5s;

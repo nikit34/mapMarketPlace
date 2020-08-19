@@ -153,7 +153,7 @@ class Card extends HTMLElement {
             wraper = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_image');
-                elem.textContent = 'Image:         ';
+                elem.textContent = 'Image Upload';
             wraper.appendChild(elem);
                 elem = document.createElement('input');
                 elem.style.maxWidth = '175px';
@@ -204,8 +204,8 @@ class Card extends HTMLElement {
 
     event_listens(){
         this.addEventListener('mouseover', () => {
-            this.style.boxShadow = `inset 0 0 ${parseInt(this.set_size_elem.x * 10) + 'px'} ${parseInt(this.set_size_elem.x / 10) + 'px'} rgba(0,0,0,0.8)`;
-            this.style.color = 'white';
+            this.style.boxShadow = `inset 0 0 ${parseInt(this.set_size_elem.x * 50) + 'px'} ${parseInt(this.set_size_elem.x) + 'px'} rgba(0,0,0,0.8)`;
+            this.style.color = '#8de890';
         });
         this.addEventListener('mouseout', () => {
             this.style.boxShadow = 'none';
