@@ -38,18 +38,17 @@ function generateElems(NUM_COL, NUM_ROW){
             if (Number.isInteger(i) && Number.isInteger(j) ||
                 !Number.isInteger(i) && !Number.isInteger(j)) {
                 set_coord = {x: set_size_elem.x * j, y: set_size_elem.y * i };
-                set_bg = 'url("../static/logo.png")';
+                set_bg = 'url("../static/bg_card.jpg")';
                 set_text = `card_${i}_${j}`; // TODO: get from db -> text, bg
                 let card = new Card(set_size_elem, set_coord, set_bg, set_text);
                 if (card.default_state()) {
-                    card.display_curtain();
+                    card.display_curtain(true);
                 } else {
                     card.display_ads_text();
                 }
                 card.event_listens();
-                elem_root.appendChild(card);
-                card.build_static_style();
                 card.setAttribute('id', `card_${i}_${j}`);
+                elem_root.appendChild(card);
             }
         }
     }
@@ -69,8 +68,11 @@ class Card extends HTMLElement {
         }
         this.set_bg = set_bg;
         this.set_text = set_text;
+
         this.build_define_style();
-        this.form = null
+
+        this.form = null;
+        this.text_elem = null;
     }
 
     build_define_style() {
@@ -80,9 +82,6 @@ class Card extends HTMLElement {
         this.style.left = this.set_coord.x + 'px';
         this.style.top = this.set_coord.y + 'px';
         this.style.background = this.set_bg;
-    }
-
-    build_static_style(){
         this.setAttribute('class', 'card');
     }
 
@@ -92,11 +91,16 @@ class Card extends HTMLElement {
         this.appendChild(text_elem);
     }
 
-    display_curtain(){
-        let text_elem = document.createElement('p');
-        text_elem.setAttribute('class', 'curtain');
-        text_elem.textContent = "Here You can \nplace your ads";
-        this.appendChild(text_elem);
+    display_curtain(enable){
+        if(enable){
+            this.text_elem = document.createElement('p');
+            this.text_elem.setAttribute('class', 'curtain');
+            this.text_elem.textContent = "Not occupied";
+            this.text_elem.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.text_elem);
+        } else {
+            this.text_elem.remove();
+        }
     }
 
     display_input_form() {
@@ -104,82 +108,87 @@ class Card extends HTMLElement {
         this.form.setAttribute('action', location.href);
         this.form.setAttribute('method', 'POST');
         this.form.setAttribute('enctype', 'multipart/form-data');
-        this.form.style.marginTop = parseInt(this.style.height) / 2 - 80 + 'px';
+        this.form.style.marginTop = parseInt(this.style.height) / 2 - 150 + 'px';
         this.form.style.marginLeft = parseInt(this.style.width) / 2 - 150 + 'px';
+        this.form.style.marginRight = parseInt(this.style.width) / 2 - 150 + 'px';
         this.form.style.zIndex = parseInt(this.style.zIndex) + 1;
         this.appendChild(this.form);
+        let wraper = document.createElement('h3');
+        wraper.textContent = "Place Your ADS";
+        this.form.appendChild(wraper);
             let elem = document.createElement('input');
             elem.setAttribute('type', 'hidden');
             elem.setAttribute('name', 'csrfmiddlewaretoken');
             elem.setAttribute('value', getCookie('csrftoken'));
         this.form.appendChild(elem);
 
-            let p = document.createElement('p');
+            wraper = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_title');
                 elem.textContent = 'Title: ';
-            p.appendChild(elem);
+            wraper.appendChild(elem);
                 elem = document.createElement('input');
                 elem.setAttribute('id', 'id_title');
                 elem.setAttribute('type', 'text');
                 elem.setAttribute('name', 'title');
                 elem.setAttribute('maxlength', '50');
                 elem.required = true;
-            p.appendChild(elem);
-        this.form.appendChild(p);
+            wraper.appendChild(elem);
+        this.form.appendChild(wraper);
 
-            p = document.createElement('p');
+            wraper = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_description');
                 elem.textContent = 'Description: ';
-            p.appendChild(elem);
+            wraper.appendChild(elem);
                 elem = document.createElement('input');
                 elem.setAttribute('id', 'id_description');
                 elem.setAttribute('type', 'text');
                 elem.setAttribute('name', 'description');
                 elem.setAttribute('maxlength', '200');
                 elem.required = false;
-            p.appendChild(elem);
-        this.form.appendChild(p);
+            wraper.appendChild(elem);
+        this.form.appendChild(wraper);
 
-            p = document.createElement('p');
+            wraper = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_image');
                 elem.textContent = 'Image:         ';
-            p.appendChild(elem);
+            wraper.appendChild(elem);
                 elem = document.createElement('input');
+                elem.style.maxWidth = '175px';
                 elem.setAttribute('id', 'id_image');
                 elem.setAttribute('type', 'file');
                 elem.setAttribute('name', 'image');
                 elem.required = true;
-            p.appendChild(elem);
-        this.form.appendChild(p);
+            wraper.appendChild(elem);
+        this.form.appendChild(wraper);
 
-            p = document.createElement('p');
+            wraper = document.createElement('p');
                 elem = document.createElement('label');
                 elem.setAttribute('for', 'id_timer');
                 elem.textContent = 'Timer: ';
-            p.appendChild(elem);
+            wraper.appendChild(elem);
                 elem = document.createElement('input');
                 elem.setAttribute('id', 'id_timer');
                 elem.setAttribute('type', 'text');
                 elem.setAttribute('name', 'timer');
                 elem.setAttribute('autocomplete', 'off');
                 elem.required = true;
-            p.appendChild(elem);
-        this.form.appendChild(p);
+            wraper.appendChild(elem);
+        this.form.appendChild(wraper);
         $("#id_timer").datepicker({
             onSelect: function() {
               $(this).change();
             }
         });
 
-            p = document.createElement('p');
+            wraper = document.createElement('p');
                 elem = document.createElement('button');
                 elem.setAttribute('type', 'submit');
                 elem.textContent = 'upload';
-            p.appendChild(elem);
-        this.form.appendChild(p);
+            wraper.appendChild(elem);
+        this.form.appendChild(wraper);
     }
 
     remove_input_form() {
@@ -290,6 +299,7 @@ class OpenCard {
     startOpen(target){
         MM.set_toggle_move_map = false;
         this.click_card = target;
+        this.click_card.display_curtain(false);
         this.click_card.style.zIndex = '12';
         this.click_card.setAttribute('class', 'card animate');
     }
@@ -332,6 +342,7 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.style.zIndex = '1';
+        this.click_card.display_curtain(true);
     }
 
     toggleBlankBlind(enable){

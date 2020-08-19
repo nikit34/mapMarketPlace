@@ -31,6 +31,11 @@
     }
 }
 
+.card h3 {
+    text-align: center;
+    color:white;
+}
+
 .card p {
     display: inline-block;
     min-width: 300px;
@@ -67,12 +72,12 @@
     color: white;
 }
 
-/* p.curtain {
-    color:red;
-    text-align: center;
-    font-size: large;
-    margin-top:40%;
-} */
+p.curtain {
+    color:#8de890;
+    font-size: small;
+    pointer-events: none;
+    margin: 50% 25%;
+}
 
 #overlay {
     position: absolute;
