@@ -4,10 +4,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+
 import datetime
+from django_tables2 import SingleTableView
 
 from .forms import MarketImageForm
 from .models import MarketImage
+from .tables import MarketImageTable
 
 
 class MainView(View):
@@ -26,7 +29,7 @@ class MainView(View):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(*args, **kwargs)
-        return render(request, 'base.html', context=self.get_context_data(*args, **kwargs))
+        return render(request, 'main.html', context=self.get_context_data(*args, **kwargs))
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -34,8 +37,10 @@ class MainView(View):
         if form.is_valid():
             form.author = request.user
             form.save(commit=True)
-        return render(request, 'base.html', context=self.get_context_data(self, *args, **kwargs))
+        return render(request, 'main.html', context=self.get_context_data(self, *args, **kwargs))
 
 
-# class BuildboardsView(LoginRequiredMixin, ListView):
-#     tetmplate_name = 'buildboards.html'
+class BuildboardsView(SingleTableView):
+    model = MarketImage
+    table_class = MarketImageTable
+    template_name = 'buildboards.html'

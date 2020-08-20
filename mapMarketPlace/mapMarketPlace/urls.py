@@ -4,12 +4,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
-from .views import authMainView
+from .views import MainView, BuildboardsView
 
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/main')),
-    path('main/', authMainView.as_view(), name='main'),
+    path('main/', MainView.as_view(), name='main'),
+    path('buildboards/', BuildboardsView.as_view(), name='buildboards'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]

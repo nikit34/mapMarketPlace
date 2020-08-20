@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mapMarketPlace',
+    
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
