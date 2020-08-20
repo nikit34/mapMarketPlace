@@ -36,8 +36,8 @@ class MarketImageForm(forms.ModelForm):
 
     def clean_image(self,  *args, **kwargs):
         file = self.cleaned_data.get('image')
-        if file.name[-4:] != '.png' or file.name[-4:] != '.jpg' or file.name[-5:] != '.jpeg':
+        if file.name[-4:] != '.png' and file.name[-4:] != '.jpg' and file.name[-5:] != '.jpeg':
             raise forms.ValidationError("Image is not valid format")
-        if file._size > 15 * 1024 * 1024:
+        if file.size > 15 * 1024 * 1024:
             raise forms.ValidationError("Image file is too large ( > 15mb )")
         return file

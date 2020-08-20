@@ -9,7 +9,7 @@ class MarketImage(models.Model):
     image = models.ImageField(upload_to='images/')
     data_publish = models.DateField(auto_now_add=True)
     timer = models.DateTimeField()
-    card_id = models.CharField(max_length=10)
+    card_id = models.CharField(max_length=20)
 
     def __str__(self):
         return self.card_id

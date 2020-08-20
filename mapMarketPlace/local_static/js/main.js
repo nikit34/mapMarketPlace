@@ -183,6 +183,13 @@ class Card extends HTMLElement {
             }
         });
 
+            elem = document.createElement('input');
+            elem.setAttribute('type', 'hidden');
+            elem.setAttribute('id', 'id_card_id');
+            elem.setAttribute('name', 'card_id');
+            elem.value = this.id;
+            this.form.appendChild(elem);
+
             wraper = document.createElement('p');
                 elem = document.createElement('button');
                 elem.setAttribute('type', 'submit');
