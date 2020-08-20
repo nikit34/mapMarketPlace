@@ -8,8 +8,14 @@ body {
     margin:0;
     padding: 0;
     overflow:  hidden;
-    background-color: rgb(100, 100, 50);
     font-family: 'Raleway', sans-serif;
+}
+
+.content-main {
+    top: 2vh;
+    bottom: 2vh;
+    left: 220px;
+    right: 0vw;
 }
 
 .sidebar {
@@ -92,13 +98,6 @@ body {
 
 .sidebar .sidebar-bottom a:hover{
     color: black;
-}
-
-.content-main {
-    top: 2vh;
-    bottom: 2vh;
-    left: 220px;
-    right: 0vw;
 }
 
 .block-notification-1 {

@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 
 import datetime
@@ -40,7 +41,7 @@ class MainView(View):
         return render(request, 'main.html', context=self.get_context_data(self, *args, **kwargs))
 
 
-class BuildboardsView(SingleTableView):
+class BuildboardsView(LoginRequiredMixin, SingleTableView):
     model = MarketImage
     table_class = MarketImageTable
     template_name = 'buildboards.html'

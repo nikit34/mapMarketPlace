@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(100, 100, 50);
+}
+
 #root {
     width: 3000px;
     height: 3000px;
@@ -149,4 +153,4 @@ p.ads_description {
     left: -20px;
     opacity: 0.7;
     z-index: 9;
-  }
+}
