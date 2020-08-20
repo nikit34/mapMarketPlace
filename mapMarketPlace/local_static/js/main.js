@@ -3,6 +3,9 @@ import getCookie from './base.js';
 var MM;
 var OC;
 
+function sleep(duration) {
+    return new Promise((resolve) => setTimeout(resolve, duration));
+}
 
 window.onload = () => {
     if(window.location.href.indexOf('main') > -1 &&
@@ -22,7 +25,7 @@ window.onload = () => {
     }
 }
 
-function generateElems(NUM_COL, NUM_ROW){
+async function generateElems(NUM_COL, NUM_ROW){
     const elem_root = document.getElementById('root');
     const size_root = {
         x: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('height')),
@@ -33,6 +36,7 @@ function generateElems(NUM_COL, NUM_ROW){
         y: parseInt(size_root.y / NUM_ROW)
     };
     let card, set_coord, generated_id;
+    await sleep(500);
     let saved_cards = JSON.parse(JSON.parse(document.getElementById('js-cards').textContent));
     let saved_card_fields;
     for(let i = 0; i < NUM_COL - 0.5; i += 0.5){
