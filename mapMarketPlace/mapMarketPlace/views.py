@@ -24,17 +24,15 @@ class authMainView(View):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(*args, **kwargs)
-        return render(request, 'base.html', context=context)
+        return render(request, 'base.html', context=self.get_context_data(*args, **kwargs))
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        context = self.get_context_data(*args, **kwargs)
         form = MarketImageForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             form.author = request.user
             form.save(commit=True)
-        context['form'] = form
-        return render(request, 'base.html', context=context)
+        return render(request, 'base.html', context=self.get_context_data(self, *args, **kwargs))
 
 
 # class guestMainView(LoginRequiredMixin, View):

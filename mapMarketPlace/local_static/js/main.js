@@ -12,13 +12,7 @@ window.onload = () => {
 
         window.customElements.define('card-map', Card);
 
-        const size_root = generateElems(NUM_COL, NUM_ROW);
-
-        MM = new MoveMap();
-        MM.event_listens();
-
-        OC = new OpenCard(size_root);
-        OC.event_listens();
+        generateElems(NUM_COL, NUM_ROW);
     }
 }
 
@@ -60,7 +54,11 @@ async function generateElems(NUM_COL, NUM_ROW){
             }
         }
     }
-    return size_root;
+    MM = new MoveMap();
+    MM.event_listens();
+
+    OC = new OpenCard(size_root);
+    OC.event_listens();
 }
 
 class Card extends HTMLElement {
