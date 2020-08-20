@@ -34,6 +34,7 @@
 .card h3 {
     text-align: center;
     color:white;
+    pointer-events: none;
 }
 
 .card p {
@@ -122,11 +123,21 @@ p.curtain {
     margin: 50% 25%;
 }
 
-p.ads_text {
+p.ads_title {
     font-size: small;
     pointer-events: none;
     margin: 40% 20%;
     min-width: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+p.ads_description {
+    font-size: x-large;
+    pointer-events: none;
+    text-align: center;
+    margin: 40% 30%;
+    color:white;
     overflow: hidden;
     text-overflow: ellipsis;
 }

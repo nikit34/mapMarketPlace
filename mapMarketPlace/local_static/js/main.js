@@ -22,6 +22,7 @@ async function generateElems(NUM_COL, NUM_ROW){
         x: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('height')),
         y: parseInt(window.getComputedStyle(elem_root, 'div').getPropertyValue('width'))
     }
+    window.scrollTo( parseInt(size_root.x / 2) - 400, parseInt(size_root.y / 2) );
     const set_size_elem = {
         x: parseInt(size_root.x / NUM_COL),
         y: parseInt(size_root.y / NUM_ROW)
@@ -41,7 +42,8 @@ async function generateElems(NUM_COL, NUM_ROW){
                     saved_card_fields = saved_cards[saved_card_index].fields;
                     if (generated_id === saved_card_fields.card_id){
                         card.display_ads_image(saved_card_fields.image);
-                        card.display_ads_text(saved_card_fields.title);
+                        card.display_ads_title(saved_card_fields.title);
+                        card.buffer_description = saved_card_fields.description;
                         break;
                     }
                     if(saved_card_index === saved_cards.length) {
@@ -75,7 +77,9 @@ class Card extends HTMLElement {
         this.build_define_style();
 
         this.form = null;
-        this.set_text = null;
+        this.set_title = null;
+        this.set_description = null;
+        this.buffer_description = null;
         this.curtain_text = null;
     }
 
@@ -90,15 +94,27 @@ class Card extends HTMLElement {
         this.setAttribute('class', 'card');
     }
 
-    display_ads_text(set_text) {
-        if(!!set_text){
-            this.set_text = document.createElement('p');
-            this.set_text.setAttribute('class', 'ads_text');
-            this.set_text.textContent = set_text;
-            this.set_text.style.zIndex = parseInt(this.style.zIndex) + 1;
-            this.appendChild(this.set_text);
-        } else if(!!this.set_text) {
-            this.set_text.remove();
+    display_ads_title(set_title) {
+        if(!!set_title){
+            this.set_title = document.createElement('p');
+            this.set_title.setAttribute('class', 'ads_title');
+            this.set_title.textContent = set_title;
+            this.set_title.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.set_title);
+        } else if(!!this.set_title) {
+            this.set_title.remove();
+        }
+    }
+
+    display_ads_description(buffer_description){
+        if(!!buffer_description){
+            this.set_description = document.createElement('p');
+            this.set_description.setAttribute('class', 'ads_description');
+            this.set_description.textContent = buffer_description;
+            this.set_description.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.set_description);
+        } else if(!!this.set_description) {
+            this.set_description.remove();
         }
     }
 
@@ -316,7 +332,7 @@ class OpenCard {
         MM.set_toggle_move_map = false;
         this.click_card = target;
         this.click_card.display_curtain(false);
-        this.click_card.display_ads_text(false);
+        this.click_card.display_ads_title(false);
         this.click_card.style.zIndex = '12';
         this.click_card.setAttribute('class', 'card animate');
     }
@@ -334,15 +350,19 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.before(this.black_blind);
-        if(is_auth) {
+        if(is_auth && !this.click_card.buffer_description) {
             this.click_card.display_input_form(true);
+        } else if(!!this.click_card.buffer_description){
+            this.click_card.display_ads_description(this.click_card.buffer_description);
         }
     }
 
     startClose(is_auth){
         MM.set_toggle_move_map = true;
-        if(is_auth){
+        if(is_auth && !this.click_card.buffer_description){
             this.click_card.display_input_form(false);
+        } else if(!!this.click_card.buffer_description){
+            this.click_card.display_ads_description(false);
         }
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card animate');
@@ -359,8 +379,8 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.style.zIndex = '1';
-        if(!!this.click_card.set_text){
-            this.click_card.display_ads_text(this.click_card.set_text.textContent);
+        if(!!this.click_card.set_title){
+            this.click_card.display_ads_title(this.click_card.set_title.textContent);
         } else {
             this.click_card.display_curtain(true);
         }
@@ -379,7 +399,7 @@ class OpenCard {
 
     event_listens(){
         let is_auth = JSON.parse(document.getElementById('js-auth').textContent);
-        document.body,addEventListener('click', (e) => {
+        document.body,addEventListener('dblclick', (e) => {
             if((e.target.id).toString().substring(0, 5) === 'card_' &&
                 Object.keys(this.toggle).every((k) => !this.toggle[k])
             ) {
