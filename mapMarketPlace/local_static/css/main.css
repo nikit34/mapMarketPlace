@@ -122,6 +122,15 @@ p.curtain {
     margin: 50% 25%;
 }
 
+p.ads_text {
+    font-size: small;
+    pointer-events: none;
+    margin: 40% 20%;
+    min-width: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #overlay {
     position: absolute;
     background: black;

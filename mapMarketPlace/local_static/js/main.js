@@ -32,19 +32,26 @@ function generateElems(NUM_COL, NUM_ROW){
         x: parseInt(size_root.x / NUM_COL),
         y: parseInt(size_root.y / NUM_ROW)
     };
-    let set_coord, set_bg, set_text;
-    for(let i = 0; i < NUM_ROW - 0.5; i += 0.5){
-        for(let j = 0; j < NUM_COL - 0.5; j += 0.5){
+    let card, set_coord, generated_id;
+    let saved_cards = JSON.parse(JSON.parse(document.getElementById('js-cards').textContent));
+    let saved_card_fields;
+    for(let i = 0; i < NUM_COL - 0.5; i += 0.5){
+        for(let j = 0; j < NUM_ROW - 0.5; j += 0.5){
             if (Number.isInteger(i) && Number.isInteger(j) ||
                 !Number.isInteger(i) && !Number.isInteger(j)) {
                 set_coord = {x: set_size_elem.x * j, y: set_size_elem.y * i };
-                set_bg = 'url("../static/bg_card.jpg")';
-                set_text = `card_${i}_${j}`; // TODO: get from db -> text, bg
-                let card = new Card(set_size_elem, set_coord, set_bg, set_text);
-                if (card.default_state()) {
-                    card.display_curtain(true);
-                } else {
-                    card.display_ads_text();
+                generated_id = `card_${i}_${j}`;
+                card = new Card(set_size_elem, set_coord);
+                for(let saved_card_index = 0; saved_card_index < saved_cards.length; saved_card_index++){
+                    saved_card_fields = saved_cards[saved_card_index].fields;
+                    if (generated_id === saved_card_fields.card_id){
+                        card.display_ads_image(saved_card_fields.image);
+                        card.display_ads_text(saved_card_fields.title);
+                        break;
+                    }
+                    if(saved_card_index === saved_cards.length) {
+                        card.display_curtain(true);
+                    }
                 }
                 card.event_listens();
                 card.setAttribute('id', `card_${i}_${j}`);
@@ -56,7 +63,7 @@ function generateElems(NUM_COL, NUM_ROW){
 }
 
 class Card extends HTMLElement {
-    constructor(set_size_elem, set_coord, set_bg, set_text = ''){
+    constructor(set_size_elem, set_coord){
         super();
         this.set_size_elem = {};
         for (var key in set_size_elem) {
@@ -66,13 +73,11 @@ class Card extends HTMLElement {
         for (var key in set_coord) {
             this.set_coord[key] = set_coord[key];
         }
-        this.set_bg = set_bg;
-        this.set_text = set_text;
-
         this.build_define_style();
 
         this.form = null;
-        this.text_elem = null;
+        this.set_text = null;
+        this.curtain_text = null;
     }
 
     build_define_style() {
@@ -81,138 +86,143 @@ class Card extends HTMLElement {
         this.style.fontSize = this.set_size_elem.x / 10 + 'px';
         this.style.left = this.set_coord.x + 'px';
         this.style.top = this.set_coord.y + 'px';
-        this.style.background = this.set_bg;
+        this.style.background = 'url("../static/bg_card.jpg")';
+        this.style.color = 'rgba(0,0,0,0)';
         this.setAttribute('class', 'card');
     }
 
-    display_ads_text() {
-        let text_elem = document.createElement('p');
-        text_elem.textContent = this.set_text;
-        this.appendChild(text_elem);
+    display_ads_text(set_text) {
+        if(!!set_text){
+            this.set_text = document.createElement('p');
+            this.set_text.setAttribute('class', 'ads_text');
+            this.set_text.textContent = set_text;
+            this.set_text.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.set_text);
+        } else if(!!this.set_text) {
+            this.set_text.remove();
+        }
+    }
+
+    display_ads_image(set_bg) {
+        this.style.background = "url('/media/" + set_bg + "')";
     }
 
     display_curtain(enable){
         if(enable){
-            this.text_elem = document.createElement('p');
-            this.text_elem.setAttribute('class', 'curtain');
-            this.text_elem.textContent = "Not occupied";
-            this.text_elem.style.zIndex = parseInt(this.style.zIndex) + 1;
-            this.appendChild(this.text_elem);
-        } else {
-            this.text_elem.remove();
+            this.build_define_style();
+            this.curtain_text = document.createElement('p');
+            this.curtain_text.setAttribute('class', 'curtain');
+            this.curtain_text.textContent = "Not occupied";
+            this.curtain_text.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.curtain_text);
+        } else if(!!this.curtain_text) {
+            this.curtain_text.remove();
         }
     }
 
-    display_input_form() {
-        this.form = document.createElement('form');
-        this.form.setAttribute('action', location.href);
-        this.form.setAttribute('method', 'POST');
-        this.form.setAttribute('enctype', 'multipart/form-data');
-        this.form.style.marginTop = parseInt(this.style.height) / 2 - 150 + 'px';
-        this.form.style.marginLeft = parseInt(this.style.width) / 2 - 150 + 'px';
-        this.form.style.marginRight = parseInt(this.style.width) / 2 - 150 + 'px';
-        this.form.style.zIndex = parseInt(this.style.zIndex) + 1;
-        this.appendChild(this.form);
-        let wraper = document.createElement('h3');
-        wraper.textContent = "Place Your ADS";
-        this.form.appendChild(wraper);
-            let elem = document.createElement('input');
-            elem.setAttribute('type', 'hidden');
-            elem.setAttribute('name', 'csrfmiddlewaretoken');
-            elem.setAttribute('value', getCookie('csrftoken'));
-        this.form.appendChild(elem);
-
-            wraper = document.createElement('p');
-                elem = document.createElement('label');
-                elem.setAttribute('for', 'id_title');
-                elem.textContent = 'Title: ';
-            wraper.appendChild(elem);
-                elem = document.createElement('input');
-                elem.setAttribute('id', 'id_title');
-                elem.setAttribute('type', 'text');
-                elem.setAttribute('name', 'title');
-                elem.setAttribute('maxlength', '50');
-                elem.required = true;
-            wraper.appendChild(elem);
-        this.form.appendChild(wraper);
-
-            wraper = document.createElement('p');
-                elem = document.createElement('label');
-                elem.setAttribute('for', 'id_description');
-                elem.textContent = 'Description: ';
-            wraper.appendChild(elem);
-                elem = document.createElement('input');
-                elem.setAttribute('id', 'id_description');
-                elem.setAttribute('type', 'text');
-                elem.setAttribute('name', 'description');
-                elem.setAttribute('maxlength', '200');
-                elem.required = false;
-            wraper.appendChild(elem);
-        this.form.appendChild(wraper);
-
-            wraper = document.createElement('p');
-                elem = document.createElement('label');
-                elem.setAttribute('for', 'id_image');
-                elem.textContent = 'Image Upload';
-            wraper.appendChild(elem);
-                elem = document.createElement('input');
-                elem.style.maxWidth = '175px';
-                elem.setAttribute('id', 'id_image');
-                elem.setAttribute('type', 'file');
-                elem.setAttribute('name', 'image');
-                elem.required = true;
-            wraper.appendChild(elem);
-        this.form.appendChild(wraper);
-
-            wraper = document.createElement('p');
-                elem = document.createElement('label');
-                elem.setAttribute('for', 'id_timer');
-                elem.textContent = 'Timer: ';
-            wraper.appendChild(elem);
-                elem = document.createElement('input');
-                elem.setAttribute('id', 'id_timer');
-                elem.setAttribute('type', 'text');
-                elem.setAttribute('name', 'timer');
-                elem.setAttribute('autocomplete', 'off');
-                elem.required = true;
-            wraper.appendChild(elem);
-        this.form.appendChild(wraper);
-        $("#id_timer").datepicker({
-            onSelect: function() {
-              $(this).change();
-            }
-        });
-
-            elem = document.createElement('input');
-            elem.setAttribute('type', 'hidden');
-            elem.setAttribute('id', 'id_card_id');
-            elem.setAttribute('name', 'card_id');
-            elem.value = this.id;
+    display_input_form(enable) {
+        if(enable){
+            this.form = document.createElement('form');
+            this.form.setAttribute('action', location.href);
+            this.form.setAttribute('method', 'POST');
+            this.form.setAttribute('enctype', 'multipart/form-data');
+            this.form.style.marginTop = parseInt(this.style.height) / 2 - 150 + 'px';
+            this.form.style.marginLeft = parseInt(this.style.width) / 2 - 150 + 'px';
+            this.form.style.marginRight = parseInt(this.style.width) / 2 - 150 + 'px';
+            this.form.style.zIndex = parseInt(this.style.zIndex) + 1;
+            this.appendChild(this.form);
+            let wraper = document.createElement('h3');
+            wraper.textContent = "Place Your ADS";
+            this.form.appendChild(wraper);
+                let elem = document.createElement('input');
+                elem.setAttribute('type', 'hidden');
+                elem.setAttribute('name', 'csrfmiddlewaretoken');
+                elem.setAttribute('value', getCookie('csrftoken'));
             this.form.appendChild(elem);
 
-            wraper = document.createElement('p');
-                elem = document.createElement('button');
-                elem.setAttribute('type', 'submit');
-                elem.textContent = 'upload';
-            wraper.appendChild(elem);
-        this.form.appendChild(wraper);
-    }
+                wraper = document.createElement('p');
+                    elem = document.createElement('label');
+                    elem.setAttribute('for', 'id_title');
+                    elem.textContent = 'Title: ';
+                wraper.appendChild(elem);
+                    elem = document.createElement('input');
+                    elem.setAttribute('id', 'id_title');
+                    elem.setAttribute('type', 'text');
+                    elem.setAttribute('name', 'title');
+                    elem.setAttribute('maxlength', '50');
+                    elem.required = true;
+                wraper.appendChild(elem);
+            this.form.appendChild(wraper);
 
-    remove_input_form() {
-        this.form.remove();
-    }
+                wraper = document.createElement('p');
+                    elem = document.createElement('label');
+                    elem.setAttribute('for', 'id_description');
+                    elem.textContent = 'Description: ';
+                wraper.appendChild(elem);
+                    elem = document.createElement('input');
+                    elem.setAttribute('id', 'id_description');
+                    elem.setAttribute('type', 'text');
+                    elem.setAttribute('name', 'description');
+                    elem.setAttribute('maxlength', '200');
+                    elem.required = false;
+                wraper.appendChild(elem);
+            this.form.appendChild(wraper);
 
-    default_state(){
-        if (this.set_text.substring(0, 5) === 'card_') {
-            return true;
+                wraper = document.createElement('p');
+                    elem = document.createElement('label');
+                    elem.setAttribute('for', 'id_image');
+                    elem.textContent = 'Image Upload';
+                wraper.appendChild(elem);
+                    elem = document.createElement('input');
+                    elem.style.maxWidth = '175px';
+                    elem.setAttribute('id', 'id_image');
+                    elem.setAttribute('type', 'file');
+                    elem.setAttribute('name', 'image');
+                    elem.required = true;
+                wraper.appendChild(elem);
+            this.form.appendChild(wraper);
+
+                wraper = document.createElement('p');
+                    elem = document.createElement('label');
+                    elem.setAttribute('for', 'id_timer');
+                    elem.textContent = 'Timer: ';
+                wraper.appendChild(elem);
+                    elem = document.createElement('input');
+                    elem.setAttribute('id', 'id_timer');
+                    elem.setAttribute('type', 'text');
+                    elem.setAttribute('name', 'timer');
+                    elem.setAttribute('autocomplete', 'off');
+                    elem.required = true;
+                wraper.appendChild(elem);
+            this.form.appendChild(wraper);
+            $("#id_timer").datepicker({
+                onSelect: function() {
+                  $(this).change();
+                }
+            });
+
+                elem = document.createElement('input');
+                elem.setAttribute('type', 'hidden');
+                elem.setAttribute('id', 'id_card_id');
+                elem.setAttribute('name', 'card_id');
+                elem.value = this.id;
+            this.form.appendChild(elem);
+
+                wraper = document.createElement('p');
+                    elem = document.createElement('button');
+                    elem.setAttribute('type', 'submit');
+                    elem.textContent = 'upload';
+                wraper.appendChild(elem);
+            this.form.appendChild(wraper);
+        } else if(!!this.form) {
+            this.form.remove();
         }
-        return false;
     }
 
     event_listens(){
         this.addEventListener('mouseover', () => {
             this.style.boxShadow = `inset 0 0 ${parseInt(this.set_size_elem.x * 50) + 'px'} ${parseInt(this.set_size_elem.x) + 'px'} rgba(0,0,0,0.8)`;
-            this.style.color = '#8de890';
+            this.style.color = 'rgb(0,0,0)';
         });
         this.addEventListener('mouseout', () => {
             this.style.boxShadow = 'none';
@@ -307,6 +317,7 @@ class OpenCard {
         MM.set_toggle_move_map = false;
         this.click_card = target;
         this.click_card.display_curtain(false);
+        this.click_card.display_ads_text(false);
         this.click_card.style.zIndex = '12';
         this.click_card.setAttribute('class', 'card animate');
     }
@@ -325,14 +336,14 @@ class OpenCard {
         this.click_card.setAttribute('class', 'card');
         this.click_card.before(this.black_blind);
         if(is_auth) {
-            this.click_card.display_input_form();
+            this.click_card.display_input_form(true);
         }
     }
 
     startClose(is_auth){
         MM.set_toggle_move_map = true;
         if(is_auth){
-            this.click_card.remove_input_form();
+            this.click_card.display_input_form(false);
         }
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card animate');
@@ -349,7 +360,11 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.style.zIndex = '1';
-        this.click_card.display_curtain(true);
+        if(!!this.click_card.set_text){
+            this.click_card.display_ads_text(this.click_card.set_text.textContent);
+        } else {
+            this.click_card.display_curtain(true);
+        }
     }
 
     toggleBlankBlind(enable){
