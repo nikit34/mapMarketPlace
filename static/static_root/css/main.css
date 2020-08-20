@@ -7,7 +7,6 @@
     clip-path: polygon(50% 2%, 98% 50%, 50% 98%, 2% 50%);
     position: absolute;
     box-shadow: none;
-    color: rgba(0, 0, 0, 0);
     z-index: 1;
     background-size: cover !important;
     background-position: center !important;
@@ -32,40 +31,115 @@
     }
 }
 
+.card h3 {
+    text-align: center;
+    color:white;
+    pointer-events: none;
+}
+
 .card p {
     display: inline-block;
     min-width: 300px;
-    color:white;
+}
+
+.card:hover {
+    color:white !important;
 }
 
 .card p label{
     float: left;
     clear: right;
+    font-size: larger;
+    color:white;
 }
 
 .card p input{
     float: right;
+    background-color: rgba(100, 100, 50, 0.25);
+}
+
+.card input:focus{
+    color:rgb(0, 255, 0);
+    background-color: #ffffff00 !important;
+    outline: none;
+}
+
+.card input:-webkit-autofill,
+.card input:-webkit-autofill:hover,
+.card input:-webkit-autofill:focus,
+.card textarea:-webkit-autofill,
+.card textarea:-webkit-autofill:hover,
+.card textarea:-webkit-autofill:focus,
+.card select:-webkit-autofill,
+.card select:-webkit-autofill:hover,
+.card select:-webkit-autofill:focus {
+  border: none;
+  -webkit-text-fill-color: rgb(0, 255, 0);
+  -webkit-box-shadow: 0 0 0px 1000px rgba(100, 100, 50, 0.25) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.card input[type="text" i]{
+    padding: 0 !important;
+}
+
+.card label[for="id_image"] {
+    border: 1px solid gray;
+    color: white;
+    background-color: rgba(100, 100, 50, 0.9);
+    border-radius: 5px !important;
+    padding: 5px 10px 5px 10px;
+    font-size: small !important;
+    float: right !important;
+    transition: all 1s;
+}
+.card input[id="id_image"][type=file] {
+    opacity: 0;
+}
+.card label[for="id_image"]:hover {
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .card button{
-    margin-left: 250px;
-}
-
-.card div {
-    text-align: center;
-    margin: 50% 40% 40% 40%;
-    min-height: 5vh;
-    padding: 1.25vh 1vw 1vh 1vw;
-    font-size: large;
-    border-radius: 2vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: rgb(5, 5, 50);
-    transition: all 0.5s;
-}
-
-.card div:hover{
-    background-color: rgba(5, 5, 50, 0.9);
+    float: right !important;
+    border: 1px solid gray;
     color: white;
+    background-color: rgba(100, 100, 50, 0.9);
+    border-radius: 2px !important;
+    padding: 5px 10px 5px 10px;
+    transition: all 1s;
+}
+.card button:hover{
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+p.curtain {
+    font-size: small;
+    pointer-events: none;
+    margin: 50% 25%;
+}
+
+p.ads_title {
+    font-size: small;
+    pointer-events: none;
+    margin: 40% 20%;
+    min-width: 5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+p.ads_description {
+    font-size: x-large;
+    pointer-events: none;
+    text-align: center;
+    margin: 40% 30%;
+    color:white;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #overlay {
