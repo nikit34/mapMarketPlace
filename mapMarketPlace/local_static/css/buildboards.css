@@ -46,22 +46,22 @@ a:focus:after {
 
 tbody tr td {
     padding: 1vh 1vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border: 1px solid black;
-    border-radius: 5px;
+}
+
+tbody tr:hover td {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: whitesmoke;
 }
 
 .pagination {
     white-space: nowrap;
     text-align: center;
-
 }
 
 .pagination li{
     display: inline-block;
     height: 100%;
-    margin: 1vh 2vw 1vh 2vw;
 }
 
 .pagination li a{
