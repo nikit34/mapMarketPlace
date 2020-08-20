@@ -1,11 +1,8 @@
-import getCookie from './base.js';
+import { getCookie, sleep } from './base.js';
 
 var MM;
 var OC;
 
-function sleep(duration) {
-    return new Promise((resolve) => setTimeout(resolve, duration));
-}
 
 window.onload = () => {
     if(window.location.href.indexOf('main') > -1 &&

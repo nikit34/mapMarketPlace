@@ -1,4 +1,4 @@
-export default function getCookie(name) {
+export function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -25,3 +25,7 @@ $.ajaxSetup({
         }
     }
 });
+
+export function sleep(duration) {
+    return new Promise((resolve) => setTimeout(resolve, duration));
+}
