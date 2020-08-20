@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mapMarketPlace',
-    
+
     'django_tables2',
 ]
 
@@ -33,6 +33,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mapMarketPlace.urls'
+
+AUTH_USER_MODEL = 'auth.User'
 
 LOGIN_REDIRECT_URL = '/main/'
 

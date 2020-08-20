@@ -6,6 +6,7 @@ class MarketImageTable(tables.Table):
         model = MarketImage
         template_name = "django_tables2/bootstrap4.html"
         fields = (
+            'author',
             'title',
             'description',
             'image',
