@@ -1,15 +1,16 @@
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+import datetime
 
 from .forms import MarketImageForm
 from .models import MarketImage
 
 
-class authMainView(View):
+class MainView(View):
 
     def get_context_data(self, *args, **kwargs):
         context = {}
@@ -17,7 +18,8 @@ class authMainView(View):
             context['is_auth'] = True
         else:
             context['is_auth'] = False
-        data = MarketImage.objects.all()
+        board_date = datetime.date.today() - datetime.timedelta(days=1)
+        data = MarketImage.objects.filter(timer__gte=board_date)
         context['cards'] = serializers.serialize('json', data)
         return context
 
@@ -35,8 +37,5 @@ class authMainView(View):
         return render(request, 'base.html', context=self.get_context_data(self, *args, **kwargs))
 
 
-# class guestMainView(LoginRequiredMixin, View):
-#     @method_decorator(ensure_csrf_cookie)
-#     def get(self, request, *args, **kwargs):
-#         # cards = MarketImage.objects.all()
-#         return render(request, 'base.html')
+# class BuildboardsView(LoginRequiredMixin, ListView):
+#     tetmplate_name = 'buildboards.html'
