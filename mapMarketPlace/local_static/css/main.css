@@ -80,6 +80,7 @@ body {
   border: none;
   -webkit-text-fill-color: rgb(0, 255, 0);
   -webkit-box-shadow: 0 0 0px 1000px rgba(100, 100, 50, 0.25) inset;
+  box-shadow: 0 0 0px 1000px rgba(100, 100, 50, 0.25) inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 
