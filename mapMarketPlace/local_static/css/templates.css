@@ -1,0 +1,36 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    overflow-y: scroll;
+}
+
+.template-root {
+    display: inline-block;
+    min-width: 80vw;
+    margin: 1vh 0 0 5vw;
+}
+
+.template-right {
+    float: right;
+    padding: 2vh 2vw;
+    width: 35vw;
+    border: solid 2px whitesmoke;
+    border-radius: 5px;
+}
+
+.template-left {
+    float: left;
+    padding: 2vh 2vw;
+    width: 35vw;
+    border: solid 2px whitesmoke;
+    border-radius: 5px;
+}
+
+.template-root img {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%;
+}
+
+.template-description {
+    padding: 1vh 0 1vh 0;
+}

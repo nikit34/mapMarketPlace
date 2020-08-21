@@ -1,12 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <ul>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/templates.css' %}">
+    <p>Nearest date cut buildboard: {{ nearest_date }}</p>
     {% for c in cards %}
-        <li>{{ c.image }} - {{ c.title }}</li>
+        {% if forloop.counter0|divisibleby:2 %}
+            <div class="row template-root">
+                <div class="col">
+                    <div class="row template-left">
+                        <div class="col">
+                            <img src="{{ c.image.url }}" />
+                        </div>
+                        <div class="col">
+                            <div class="template-description">
+                                <p>{{ c.title }}</p>
+                                <p style="font-size: small;">{{ c.description }}</p>
+                                <p style="font-size: small; margin-bottom:0.5px; color:rgba(100,100,50,0.5);">published</p>
+                                <p style="margin-top:0.5px;">{{ c.data_publish|date:"d M Y" }}</p>
+                                <p style="font-size: small; margin-bottom:0.5px; color:rgba(100,100,50,0.5);">indeed</p>
+                                <p style="margin-top:0.5px; ">{{ c.timer|date:"d M, H:i:s" }}</p>
+                                <p style="font-size: small; color:rgba(100,100,50,0.5);">id: {{ c.card_id }}</p>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    <div class="row template-right">
+                        <div class="col">
+                            <img src="{{ c.image.url }}" />
+                        </div>
+                        <div class="col">
+                            <div class="template-description">
+                                <p>{{ c.title }}</p>
+                                <p style="font-size: small;">{{ c.description }}</p>
+                                <p style="font-size: small; margin-bottom:0.5px; color:rgba(100,100,50,0.5);">published</p>
+                                <p style="margin-top:0.5px;">{{ c.data_publish|date:"d M Y" }}</p>
+                                <p style="font-size: small; margin-bottom:0.5px; color:rgba(100,100,50,0.5);">indeed</p>
+                                <p style="margin-top:0.5px; ">{{ c.timer|date:"d M, H:i:s" }}</p>
+                                <p style="font-size: small; color:rgba(100,100,50,0.5);">id: {{ c.card_id }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     {% empty %}
-        <li>No articles yet.</li>
+        No articles yet.
     {% endfor %}
-    </ul>
+<br>
 {% endblock %}

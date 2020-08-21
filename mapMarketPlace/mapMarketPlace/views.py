@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
+from django.views.generic.detail import SingleObjectMixin
 
 import datetime
 from django_tables2 import SingleTableMixin
@@ -50,16 +51,23 @@ class BuildboardsView(LoginRequiredMixin, SingleTableMixin, FilterView):
     filterset_class = MarketImageFilter
 
 
-class TemplatesListView(ListView):
+class TemplatesListView(LoginRequiredMixin, ListView):
     model = MarketImage
     template_name = 'templates.html'
     paginate_by = 10
-    ordering = ['-timer']
+    context_object_name = "cards"
 
     def get_queryset(self):
-        return MarketImage.objects.filter(author=self.request.user).select_related('author')
+        return MarketImage.objects.filter(
+            author=self.request.user
+        ).order_by('-timer').select_related('author')
 
     def get_context_data(self, *args, **kwargs):
         context = super(TemplatesListView, self).get_context_data(*args, **kwargs)
-        context['cards'] = self.get_queryset()
+        board_date = datetime.date.today() - datetime.timedelta(days=1)
+        ordering_dates = MarketImage.objects.only('timer').order_by('timer').values('timer')
+        i = 0
+        while board_date > ordering_dates[i]['timer'].date():
+            i += 1
+        context['nearest_date'] = ordering_dates[i]['timer'].date() - board_date
         return context
