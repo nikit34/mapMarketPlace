@@ -57,16 +57,16 @@ th a {
     transition: all 1s;
 }
 
-th:hover {
+thead th:hover {
     background-color: rgba(100, 100, 50, 0.9);
     border: solid 1px black;
 }
 
-th:hover a {
+thead th:hover a {
     color: whitesmoke;
 }
 
-a:after {
+thead a:after {
 	display: block;
 	position: absolute;
 	left: 0;
@@ -107,7 +107,7 @@ tbody tr:hover td {
     color:rgb(100, 100, 50);
     font-size: larger;
     transition: all 1s;
-    padding: 1vh 2vw 2vh 2vw;
+    padding: 1vh 2vw 1vh 2vw;
     border-radius: 5px;
 }
 
