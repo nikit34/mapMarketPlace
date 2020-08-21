@@ -9,7 +9,7 @@
             <a href="{% url 'main' %}"><li>Home</li></a>
             {% if user.is_authenticated %}
                 <a href="{% url 'buildboards' %}"><li>Buildboards</li></a>
-                <a href="#"><li>Templates</li></a>
+                <a href="{% url 'templates' %}"><li>Templates</li></a>
             {% endif %}
             <hr>
             <a href="https://vk.com/nikitapermikov"><li><i class="fa fa-vk"></i></li></a>

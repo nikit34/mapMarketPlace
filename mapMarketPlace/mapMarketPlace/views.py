@@ -25,7 +25,7 @@ class MainView(View):
         else:
             context['is_auth'] = False
         board_date = datetime.date.today() - datetime.timedelta(days=1)
-        data = MarketImage.objects.filter(timer__gte=board_date)
+        data = MarketImage.objects.filter(timer__gte=board_date).select_related('author')
         context['cards'] = serializers.serialize('json', data)
         return context
 
@@ -48,3 +48,18 @@ class BuildboardsView(LoginRequiredMixin, SingleTableMixin, FilterView):
     table_class = MarketImageTable
     template_name = 'buildboards.html'
     filterset_class = MarketImageFilter
+
+
+class TemplatesListView(ListView):
+    model = MarketImage
+    template_name = 'templates.html'
+    paginate_by = 10
+    ordering = ['-timer']
+
+    def get_queryset(self):
+        return MarketImage.objects.filter(author=self.request.user)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TemplatesListView, self).get_context_data(*args, **kwargs)
+        context['cards'] = self.get_queryset()
+        return context

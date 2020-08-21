@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <ul>
+    {% for c in cards %}
+        <li>{{ c.image }} - {{ c.title }}</li>
+    {% empty %}
+        <li>No articles yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

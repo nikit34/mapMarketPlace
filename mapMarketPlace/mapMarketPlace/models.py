@@ -14,3 +14,6 @@ class MarketImage(models.Model):
 
     def __str__(self):
         return self.card_id
+
+    class Meta:
+        ordering = ["-data_publish"]
