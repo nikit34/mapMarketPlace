@@ -25,7 +25,7 @@ class MainView(View):
         else:
             context['is_auth'] = False
         board_date = datetime.date.today() - datetime.timedelta(days=1)
-        data = MarketImage.objects.filter(timer__gte=board_date).select_related('author')
+        data = MarketImage.objects.filter(timer__gte=board_date)
         context['cards'] = serializers.serialize('json', data)
         return context
 
@@ -57,7 +57,7 @@ class TemplatesListView(ListView):
     ordering = ['-timer']
 
     def get_queryset(self):
-        return MarketImage.objects.filter(author=self.request.user)
+        return MarketImage.objects.filter(author=self.request.user).select_related('author')
 
     def get_context_data(self, *args, **kwargs):
         context = super(TemplatesListView, self).get_context_data(*args, **kwargs)
