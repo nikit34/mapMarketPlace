@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils.html import mark_safe
 
 
 class MarketImage(models.Model):
@@ -17,3 +18,9 @@ class MarketImage(models.Model):
 
     class Meta:
         ordering = ["-data_publish"]
+
+    @property
+    def image_preview(self):
+        if self.image:
+            return mark_safe('<img src="{}" width="300" height="300" />'.format(self.image.url))
+        return ""
