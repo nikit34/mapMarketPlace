@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'mapMarketPlace',
 
     'django_tables2',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

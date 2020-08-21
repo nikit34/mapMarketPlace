@@ -3,6 +3,44 @@ body {
     overflow: scroll;
 }
 
+form p {
+    display: inline-block;
+    min-width:30vw;
+    padding: 1vh 1vw 1vh 1vw;
+    background-color: rgba(100, 100, 50, 0.1);
+    border-radius: 5px;
+}
+
+form p label{
+    float: left;
+    clear: right;
+    font-size: larger;
+    margin-right: 2vw;
+}
+
+form p input{
+    float: right;
+    background-color: rgba(100, 100, 50, 0.25);
+}
+
+form button{
+    min-width: 5vw;
+    min-height: 3vh;
+    float: right;
+    margin: 2vh;
+    border: 1px solid gray;
+    color: white;
+    background-color: rgba(100, 100, 50, 0.9);
+    border-radius: 2px !important;
+    padding: 5px 10px 5px 10px;
+    transition: all 1s;
+}
+form button:hover{
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
 th {
     border-radius: 5px;
     border: solid 1px whitesmoke;

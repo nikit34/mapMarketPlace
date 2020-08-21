@@ -7,11 +7,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 
 import datetime
-from django_tables2 import SingleTableView
+from django_tables2 import SingleTableMixin
+from django_filters.views import FilterView
 
 from .forms import MarketImageForm
 from .models import MarketImage
 from .tables import MarketImageTable
+from .filters import MarketImageFilter
 
 
 class MainView(View):
@@ -41,7 +43,8 @@ class MainView(View):
         return render(request, 'main.html', context=self.get_context_data(self, *args, **kwargs))
 
 
-class BuildboardsView(LoginRequiredMixin, SingleTableView):
+class BuildboardsView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = MarketImage
     table_class = MarketImageTable
     template_name = 'buildboards.html'
+    filterset_class = MarketImageFilter
