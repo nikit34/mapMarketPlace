@@ -43,6 +43,7 @@ async function generateElems(NUM_COL, NUM_ROW){
                     if (generated_id === saved_card_fields.card_id){
                         card.display_ads_image(saved_card_fields.image);
                         card.display_ads_title(saved_card_fields.title);
+                        card.author = saved_card_fields.author;
                         card.buffer_description = saved_card_fields.description;
                         break;
                     }
@@ -75,6 +76,7 @@ class Card extends HTMLElement {
             this.set_coord[key] = set_coord[key];
         }
         this.build_define_style();
+        this.author = null;
 
         this.form = null;
         this.set_title = null;
@@ -92,6 +94,14 @@ class Card extends HTMLElement {
         this.style.background = 'url("../static/bg_card.jpg")';
         this.style.color = 'rgba(0,0,0,0)';
         this.setAttribute('class', 'card');
+    }
+
+    check_auth(auth) {
+        if(!!auth){
+            return auth === this.author ? true : false;
+        } else {
+            return false;
+        }
     }
 
     display_ads_title(set_title) {
@@ -350,7 +360,7 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.before(this.black_blind);
-        if(is_auth && !this.click_card.buffer_description) {
+        if((this.click_card.check_auth(is_auth) || this.click_card.author === null) && !this.click_card.buffer_description) {
             this.click_card.display_input_form(true);
         } else if(!!this.click_card.buffer_description){
             this.click_card.display_ads_description(this.click_card.buffer_description);
@@ -359,7 +369,7 @@ class OpenCard {
 
     startClose(is_auth){
         MM.set_toggle_move_map = true;
-        if(is_auth && !this.click_card.buffer_description){
+        if((this.click_card.check_auth(is_auth) || this.click_card.author === null) && !this.click_card.buffer_description){
             this.click_card.display_input_form(false);
         } else if(!!this.click_card.buffer_description){
             this.click_card.display_ads_description(false);
