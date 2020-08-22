@@ -41,7 +41,7 @@ class MainView(View):
         else:
             context['is_auth'] = False
         board_date = datetime.date.today() - datetime.timedelta(days=1)
-        data = MarketImage.objects.filter(timer__gte=board_date)
+        data = MarketImage.objects.filter(timer__gte=board_date).order_by('-timer')
         context['cards'] = serializers.serialize('json', data)
         return context
 
