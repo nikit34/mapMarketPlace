@@ -1,5 +1,5 @@
 from django.views.generic import View, ListView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -11,10 +11,25 @@ import datetime
 from django_tables2 import SingleTableMixin
 from django_filters.views import FilterView
 
-from .forms import MarketImageForm
+from .forms import MarketImageForm, RegisterForm
 from .models import MarketImage
 from .tables import MarketImageTable
 from .filters import MarketImageFilter
+
+
+class RegisterView(View):
+    def get(self, request, *args, **kwargs):
+        form = RegisterForm()
+        context = {'form': form}
+        return render(request, 'register.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = RegisterForm(request.POST or None)
+        context = {'form': form}
+        if form.is_valid():
+            form.save()
+            return redirect('main')
+        return render(request, 'register.html', context=context)
 
 
 class MainView(View):

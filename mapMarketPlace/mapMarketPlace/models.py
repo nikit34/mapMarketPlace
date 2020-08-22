@@ -5,7 +5,7 @@ from django.utils.html import mark_safe
 
 
 class MarketImage(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images/')

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
-from .views import MainView, BuildboardsView, TemplatesListView
+from .views import MainView, BuildboardsView, TemplatesListView, RegisterView
 
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('buildboards/', BuildboardsView.as_view(), name='buildboards'),
     path('templates/', TemplatesListView.as_view(), name='templates'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', RegisterView.as_view(), name='register'),
     path('admin/', admin.site.urls),
 ]
 

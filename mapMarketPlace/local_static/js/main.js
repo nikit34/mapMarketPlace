@@ -360,7 +360,7 @@ class OpenCard {
         this.click_card.removeAttribute('class');
         this.click_card.setAttribute('class', 'card');
         this.click_card.before(this.black_blind);
-        if(this.click_card.check_auth(is_auth) && !this.click_card.buffer_description) {
+        if((this.click_card.check_auth(is_auth) || this.click_card.author === null) && !this.click_card.buffer_description) {
             this.click_card.display_input_form(true);
         } else if(!!this.click_card.buffer_description){
             this.click_card.display_ads_description(this.click_card.buffer_description);
@@ -369,7 +369,7 @@ class OpenCard {
 
     startClose(is_auth){
         MM.set_toggle_move_map = true;
-        if(this.click_card.check_auth(is_auth) && !this.click_card.buffer_description){
+        if((this.click_card.check_auth(is_auth) || this.click_card.author === null) && !this.click_card.buffer_description){
             this.click_card.display_input_form(false);
         } else if(!!this.click_card.buffer_description){
             this.click_card.display_ads_description(false);
