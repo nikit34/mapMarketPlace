@@ -24,10 +24,10 @@
         <ul>
             {% if user.is_authenticated %}
                 <a>{{ user.get_username }}</a>
-                <a href="{% url 'logout' %}?next={{request.path}}"><li>Logout</li></a>
+                <a href="{% url 'logout' %}"><li>Logout</li></a>
             {% else %}
-                <a href="{% url 'login' %}?next={{request.path}}"><li>Login</li></a>
-                <a href="{% url 'register' %}?next={{request.path}}"><li>Register</li></a>
+                <a href="{% url 'login' %}"><li>Login</li></a>
+                <a href="{% url 'register' %}"><li>Register</li></a>
             {% endif %}
         </ul>
     </div>
