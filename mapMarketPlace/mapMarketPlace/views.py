@@ -22,7 +22,7 @@ class MainView(View):
     def get_context_data(self, *args, **kwargs):
         context = {}
         if self.request.user.is_authenticated:
-            context['is_auth'] = True
+            context['is_auth'] = self.request.user.email
         else:
             context['is_auth'] = False
         board_date = datetime.date.today() - datetime.timedelta(days=1)
