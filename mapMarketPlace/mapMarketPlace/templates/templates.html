@@ -2,7 +2,7 @@
 
 {% block content %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/templates.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templates.css' %}">
     <p>Nearest date cut buildboard: {{ nearest_date }}</p>
     {% for c in cards %}
         {% if forloop.counter0|divisibleby:2 %}
